@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>深入浅出架构</title>
+  <meta name="description" content="深入浅出的讲解什么是架构" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="深入浅出架构" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="深入浅出的讲解什么是架构" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="深入浅出架构" />
+  
+  <meta name="twitter:description" content="深入浅出的讲解什么是架构" />
+  
+
+<meta name="author" content="Liam" />
+
+
+<meta name="date" content="2024-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="架构设计历史.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">这是一本讲架构的书籍</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 什么是架构</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#系统与子系统"><i class="fa fa-check"></i><b>1.1</b> 系统与子系统</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#系统和子系统的定义"><i class="fa fa-check"></i><b>1.1.1</b> <strong>系统和子系统的定义</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#系统和子系统的关系"><i class="fa fa-check"></i><b>1.1.2</b> <strong>系统和子系统的关系</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#举例说明"><i class="fa fa-check"></i><b>1.1.3</b> <strong>举例说明</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#模块与组件"><i class="fa fa-check"></i><b>1.2</b> 模块与组件</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#模块与组件的区别从抽象到实际"><i class="fa fa-check"></i><b>1.2.1</b> 模块与组件的区别：从抽象到实际</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#维基百科的定义"><i class="fa fa-check"></i><b>1.2.2</b> 维基百科的定义</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#模块与组件的核心区别"><i class="fa fa-check"></i><b>1.2.3</b> 模块与组件的核心区别</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#形象的理解模块-vs.-组件"><i class="fa fa-check"></i><b>1.2.4</b> 形象的理解：模块 vs. 组件</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#示例分析学生信息管理系统"><i class="fa fa-check"></i><b>1.2.5</b> 示例分析：学生信息管理系统</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#实际应用模块和组件如何协同"><i class="fa fa-check"></i><b>1.2.6</b> 实际应用：模块和组件如何协同？</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#总结"><i class="fa fa-check"></i><b>1.2.7</b> 总结</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#框架与架构"><i class="fa fa-check"></i><b>1.3</b> 框架与架构</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#框架与架构定义与区别"><i class="fa fa-check"></i><b>1.3.1</b> 框架与架构：定义与区别</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#框架framework的定义与特点"><i class="fa fa-check"></i><b>1.3.2</b> <strong>框架（Framework）的定义与特点</strong></a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#架构architecture的定义与特点"><i class="fa fa-check"></i><b>1.3.3</b> <strong>架构（Architecture）的定义与特点</strong></a></li>
+<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#框架-vs.-架构"><i class="fa fa-check"></i><b>1.3.4</b> <strong>框架 vs. 架构</strong></a></li>
+<li class="chapter" data-level="1.3.5" data-path="index.html"><a href="index.html#混用与实际说法的误区"><i class="fa fa-check"></i><b>1.3.5</b> <strong>混用与实际说法的误区</strong></a></li>
+<li class="chapter" data-level="1.3.6" data-path="index.html"><a href="index.html#结合示例模块与组件的延展"><i class="fa fa-check"></i><b>1.3.6</b> <strong>结合示例：模块与组件的延展</strong></a></li>
+<li class="chapter" data-level="1.3.7" data-path="index.html"><a href="index.html#总结-1"><i class="fa fa-check"></i><b>1.3.7</b> <strong>总结</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#r架构"><i class="fa fa-check"></i><b>1.4</b> 4R架构</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="架构设计历史.html"><a href="架构设计历史.html"><i class="fa fa-check"></i><b>2</b> 架构设计历史</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="架构设计历史.html"><a href="架构设计历史.html#机器语言1940年之前"><i class="fa fa-check"></i><b>2.1</b> 机器语言（1940年之前）</a></li>
+<li class="chapter" data-level="2.2" data-path="架构设计历史.html"><a href="架构设计历史.html#汇编语言20世纪40年代"><i class="fa fa-check"></i><b>2.2</b> 汇编语言（20世纪40年代）</a></li>
+<li class="chapter" data-level="2.3" data-path="架构设计历史.html"><a href="架构设计历史.html#高级语言20世纪50年代"><i class="fa fa-check"></i><b>2.3</b> 高级语言（20世纪50年代）</a></li>
+<li class="chapter" data-level="2.4" data-path="架构设计历史.html"><a href="架构设计历史.html#第一次软件危机与结构化程序设计20世纪60年代20世纪70年代"><i class="fa fa-check"></i><b>2.4</b> 第一次软件危机与结构化程序设计（20世纪60年代~20世纪70年代）</a></li>
+<li class="chapter" data-level="2.5" data-path="架构设计历史.html"><a href="架构设计历史.html#第二次软件危机与面向对象20世纪80年代"><i class="fa fa-check"></i><b>2.5</b> 第二次软件危机与面向对象（20世纪80年代）</a></li>
+<li class="chapter" data-level="2.6" data-path="架构设计历史.html"><a href="架构设计历史.html#软件架构的历史背景"><i class="fa fa-check"></i><b>2.6</b> 软件架构的历史背景</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html"><i class="fa fa-check"></i><b>3</b> 架构设计的真正目的</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高性能"><i class="fa fa-check"></i><b>3.1</b> 高性能</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#单机复杂度"><i class="fa fa-check"></i><b>3.1.1</b> 单机复杂度</a></li>
+<li class="chapter" data-level="3.1.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#集群的复杂度"><i class="fa fa-check"></i><b>3.1.2</b> 集群的复杂度</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用"><i class="fa fa-check"></i><b>3.2</b> 高可用</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#计算高可用"><i class="fa fa-check"></i><b>3.2.1</b> 计算高可用</a></li>
+<li class="chapter" data-level="3.2.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#存储高可用"><i class="fa fa-check"></i><b>3.2.2</b> 存储高可用</a></li>
+<li class="chapter" data-level="3.2.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用状态决策"><i class="fa fa-check"></i><b>3.2.3</b> 高可用状态决策</a></li>
+<li class="chapter" data-level="3.2.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高性能high-performance"><i class="fa fa-check"></i><b>3.2.4</b> 高性能（High Performance）</a></li>
+<li class="chapter" data-level="3.2.5" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用high-availability"><i class="fa fa-check"></i><b>3.2.5</b> 高可用（High Availability）</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#可拓展性"><i class="fa fa-check"></i><b>3.3</b> 可拓展性</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#预测变化"><i class="fa fa-check"></i><b>3.3.1</b> 预测变化</a></li>
+<li class="chapter" data-level="3.3.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#年法则"><i class="fa fa-check"></i><b>3.3.2</b> 2年法则</a></li>
+<li class="chapter" data-level="3.3.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#应对变化"><i class="fa fa-check"></i><b>3.3.3</b> 应对变化</a></li>
+<li class="chapter" data-level="3.3.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#写2抄3重构原则"><i class="fa fa-check"></i><b>3.3.4</b> 1写2抄3重构原则</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#成本与安全"><i class="fa fa-check"></i><b>3.4</b> 成本与安全</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#成本"><i class="fa fa-check"></i><b>3.4.1</b> 成本</a></li>
+<li class="chapter" data-level="3.4.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#安全"><i class="fa fa-check"></i><b>3.4.2</b> 安全</a></li>
+<li class="chapter" data-level="3.4.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#规模"><i class="fa fa-check"></i><b>3.4.3</b> 规模</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="架构设计的原则.html"><a href="架构设计的原则.html"><i class="fa fa-check"></i><b>4</b> 架构设计的原则</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="架构设计的原则.html"><a href="架构设计的原则.html#合适原则"><i class="fa fa-check"></i><b>4.1</b> 合适原则</a></li>
+<li class="chapter" data-level="4.2" data-path="架构设计的原则.html"><a href="架构设计的原则.html#简单原则"><i class="fa fa-check"></i><b>4.2</b> 简单原则</a></li>
+<li class="chapter" data-level="4.3" data-path="架构设计的原则.html"><a href="架构设计的原则.html#演化原则"><i class="fa fa-check"></i><b>4.3</b> 演化原则</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="架构设计.html"><a href="架构设计.html"><i class="fa fa-check"></i><b>5</b> 架构设计</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="架构设计.html"><a href="架构设计.html#识别复杂度"><i class="fa fa-check"></i><b>5.1</b> 识别复杂度</a></li>
+<li class="chapter" data-level="5.2" data-path="架构设计.html"><a href="架构设计.html#设计备选方案"><i class="fa fa-check"></i><b>5.2</b> 设计备选方案</a></li>
+<li class="chapter" data-level="5.3" data-path="架构设计.html"><a href="架构设计.html#评估和选择备选方案"><i class="fa fa-check"></i><b>5.3</b> 评估和选择备选方案</a></li>
+<li class="chapter" data-level="5.4" data-path="架构设计.html"><a href="架构设计.html#详细方案设计"><i class="fa fa-check"></i><b>5.4</b> 详细方案设计</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="高性能架构.html"><a href="高性能架构.html"><i class="fa fa-check"></i><b>6</b> 高性能架构</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="高性能架构.html"><a href="高性能架构.html#读写分离原理"><i class="fa fa-check"></i><b>6.1</b> 读写分离原理</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="高性能架构.html"><a href="高性能架构.html#复制延迟"><i class="fa fa-check"></i><b>6.1.1</b> 复制延迟</a></li>
+<li class="chapter" data-level="6.1.2" data-path="高性能架构.html"><a href="高性能架构.html#分配机制"><i class="fa fa-check"></i><b>6.1.2</b> 分配机制</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="高性能架构.html"><a href="高性能架构.html#分库分表"><i class="fa fa-check"></i><b>6.2</b> 分库分表</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="高性能架构.html"><a href="高性能架构.html#业务分库"><i class="fa fa-check"></i><b>6.2.1</b> 业务分库</a></li>
+<li class="chapter" data-level="6.2.2" data-path="高性能架构.html"><a href="高性能架构.html#分表"><i class="fa fa-check"></i><b>6.2.2</b> 分表</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="高性能架构.html"><a href="高性能架构.html#nosql"><i class="fa fa-check"></i><b>6.3</b> NoSQL</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="高性能架构.html"><a href="高性能架构.html#k-v存储"><i class="fa fa-check"></i><b>6.3.1</b> K-V存储</a></li>
+<li class="chapter" data-level="6.3.2" data-path="高性能架构.html"><a href="高性能架构.html#文档数据库"><i class="fa fa-check"></i><b>6.3.2</b> 文档数据库</a></li>
+<li class="chapter" data-level="6.3.3" data-path="高性能架构.html"><a href="高性能架构.html#列式数据库"><i class="fa fa-check"></i><b>6.3.3</b> 列式数据库</a></li>
+<li class="chapter" data-level="6.3.4" data-path="高性能架构.html"><a href="高性能架构.html#全文搜索引擎"><i class="fa fa-check"></i><b>6.3.4</b> 全文搜索引擎</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="高性能架构.html"><a href="高性能架构.html#缓存"><i class="fa fa-check"></i><b>6.4</b> 缓存</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="高性能架构.html"><a href="高性能架构.html#缓存穿透"><i class="fa fa-check"></i><b>6.4.1</b> 缓存穿透</a></li>
+<li class="chapter" data-level="6.4.2" data-path="高性能架构.html"><a href="高性能架构.html#缓存雪崩"><i class="fa fa-check"></i><b>6.4.2</b> 缓存雪崩</a></li>
+<li class="chapter" data-level="6.4.3" data-path="高性能架构.html"><a href="高性能架构.html#缓存热点"><i class="fa fa-check"></i><b>6.4.3</b> 缓存热点</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="高性能架构.html"><a href="高性能架构.html#ppc-和tpc"><i class="fa fa-check"></i><b>6.5</b> PPC 和TPC</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="高性能架构.html"><a href="高性能架构.html#ppc"><i class="fa fa-check"></i><b>6.5.1</b> PPC</a></li>
+<li class="chapter" data-level="6.5.2" data-path="高性能架构.html"><a href="高性能架构.html#prefork"><i class="fa fa-check"></i><b>6.5.2</b> prefork</a></li>
+<li class="chapter" data-level="6.5.3" data-path="高性能架构.html"><a href="高性能架构.html#tpc"><i class="fa fa-check"></i><b>6.5.3</b> TPC</a></li>
+<li class="chapter" data-level="6.5.4" data-path="高性能架构.html"><a href="高性能架构.html#prethread"><i class="fa fa-check"></i><b>6.5.4</b> prethread</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="高性能架构.html"><a href="高性能架构.html#高效资源利用与事件处理"><i class="fa fa-check"></i><b>6.6</b> 高效资源利用与事件处理</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="高性能架构.html"><a href="高性能架构.html#为什么阻塞处理低效"><i class="fa fa-check"></i><b>6.6.1</b> 为什么阻塞处理低效？</a></li>
+<li class="chapter" data-level="6.6.2" data-path="高性能架构.html"><a href="高性能架构.html#非阻塞轮询优点与局限"><i class="fa fa-check"></i><b>6.6.2</b> 非阻塞轮询：优点与局限</a></li>
+<li class="chapter" data-level="6.6.3" data-path="高性能架构.html"><a href="高性能架构.html#io多路复用解决方案"><i class="fa fa-check"></i><b>6.6.3</b> <strong>I/O多路复用：解决方案</strong></a></li>
+<li class="chapter" data-level="6.6.4" data-path="高性能架构.html"><a href="高性能架构.html#reactor-模式"><i class="fa fa-check"></i><b>6.6.4</b> <strong>Reactor 模式</strong></a></li>
+<li class="chapter" data-level="6.6.5" data-path="高性能架构.html"><a href="高性能架构.html#reactor-模式的三种典型实现"><i class="fa fa-check"></i><b>6.6.5</b> <strong>Reactor 模式的三种典型实现</strong></a></li>
+<li class="chapter" data-level="6.6.6" data-path="高性能架构.html"><a href="高性能架构.html#proactor-模式异步io的新高度"><i class="fa fa-check"></i><b>6.6.6</b> <strong>Proactor 模式：异步I/O的新高度</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="高性能架构.html"><a href="高性能架构.html#高性能集群与负载均衡详解"><i class="fa fa-check"></i><b>6.7</b> 高性能集群与负载均衡详解</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="高性能架构.html"><a href="高性能架构.html#高性能集群的背景与目标"><i class="fa fa-check"></i><b>6.7.1</b> 高性能集群的背景与目标</a></li>
+<li class="chapter" data-level="6.7.2" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡的概念与作用"><i class="fa fa-check"></i><b>6.7.2</b> 负载均衡的概念与作用</a></li>
+<li class="chapter" data-level="6.7.3" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡的分类"><i class="fa fa-check"></i><b>6.7.3</b> 负载均衡的分类</a></li>
+<li class="chapter" data-level="6.7.4" data-path="高性能架构.html"><a href="高性能架构.html#dns负载均衡"><i class="fa fa-check"></i><b>6.7.4</b> <strong>DNS负载均衡</strong></a></li>
+<li class="chapter" data-level="6.7.5" data-path="高性能架构.html"><a href="高性能架构.html#硬件负载均衡"><i class="fa fa-check"></i><b>6.7.5</b> <strong>硬件负载均衡</strong></a></li>
+<li class="chapter" data-level="6.7.6" data-path="高性能架构.html"><a href="高性能架构.html#软件负载均衡"><i class="fa fa-check"></i><b>6.7.6</b> <strong>软件负载均衡</strong></a></li>
+<li class="chapter" data-level="6.7.7" data-path="高性能架构.html"><a href="高性能架构.html#组合使用负载均衡"><i class="fa fa-check"></i><b>6.7.7</b> <strong>组合使用负载均衡</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡算法分类与解析"><i class="fa fa-check"></i><b>6.8</b> 负载均衡算法分类与解析</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="高性能架构.html"><a href="高性能架构.html#轮询算法"><i class="fa fa-check"></i><b>6.8.1</b> 1. <strong>轮询算法</strong></a></li>
+<li class="chapter" data-level="6.8.2" data-path="高性能架构.html"><a href="高性能架构.html#加权轮询算法"><i class="fa fa-check"></i><b>6.8.2</b> 2. <strong>加权轮询算法</strong></a></li>
+<li class="chapter" data-level="6.8.3" data-path="高性能架构.html"><a href="高性能架构.html#负载最低优先算法"><i class="fa fa-check"></i><b>6.8.3</b> 3. <strong>负载最低优先算法</strong></a></li>
+<li class="chapter" data-level="6.8.4" data-path="高性能架构.html"><a href="高性能架构.html#性能最优类算法"><i class="fa fa-check"></i><b>6.8.4</b> 4. <strong>性能最优类算法</strong></a></li>
+<li class="chapter" data-level="6.8.5" data-path="高性能架构.html"><a href="高性能架构.html#hash类算法"><i class="fa fa-check"></i><b>6.8.5</b> 5. <strong>Hash类算法</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="高性能架构.html"><a href="高性能架构.html#cap-定理简介"><i class="fa fa-check"></i><b>6.9</b> CAP 定理简介</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="高性能架构.html"><a href="高性能架构.html#cap-定义的困惑"><i class="fa fa-check"></i><b>6.9.1</b> CAP 定义的困惑</a></li>
+<li class="chapter" data-level="6.9.2" data-path="高性能架构.html"><a href="高性能架构.html#cap-定理的两版解释"><i class="fa fa-check"></i><b>6.9.2</b> CAP 定理的两版解释</a></li>
+<li class="chapter" data-level="6.9.3" data-path="高性能架构.html"><a href="高性能架构.html#cap-三要素的详细解析"><i class="fa fa-check"></i><b>6.9.3</b> CAP 三要素的详细解析</a></li>
+<li class="chapter" data-level="6.9.4" data-path="高性能架构.html"><a href="高性能架构.html#cap-理论的实际应用"><i class="fa fa-check"></i><b>6.9.4</b> CAP 理论的实际应用</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="高性能架构.html"><a href="高性能架构.html#fmea-方法简介"><i class="fa fa-check"></i><b>6.10</b> FMEA 方法简介</a>
+<ul>
+<li class="chapter" data-level="6.10.1" data-path="高性能架构.html"><a href="高性能架构.html#fmea-方法的具体应用"><i class="fa fa-check"></i><b>6.10.1</b> FMEA 方法的具体应用</a></li>
+<li class="chapter" data-level="6.10.2" data-path="高性能架构.html"><a href="高性能架构.html#fmea-实战用户管理系统案例"><i class="fa fa-check"></i><b>6.10.2</b> FMEA 实战：用户管理系统案例</a></li>
+<li class="chapter" data-level="6.10.3" data-path="高性能架构.html"><a href="高性能架构.html#总结-2"><i class="fa fa-check"></i><b>6.10.3</b> 总结</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="高可用存储架构.html"><a href="高可用存储架构.html"><i class="fa fa-check"></i><b>7</b> 高可用存储架构</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#存储高可用方案"><i class="fa fa-check"></i><b>7.1</b> 存储高可用方案</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主备复制架构"><i class="fa fa-check"></i><b>7.1.1</b> 1. 主备复制架构</a></li>
+<li class="chapter" data-level="7.1.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主从复制架构"><i class="fa fa-check"></i><b>7.1.2</b> 2. 主从复制架构</a></li>
+<li class="chapter" data-level="7.1.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#双机切换架构"><i class="fa fa-check"></i><b>7.1.3</b> 3. 双机切换架构</a></li>
+<li class="chapter" data-level="7.1.4" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主主复制架构"><i class="fa fa-check"></i><b>7.1.4</b> 4. 主主复制架构</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据集群架构详解"><i class="fa fa-check"></i><b>7.2</b> 数据集群架构详解</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#什么是数据集群"><i class="fa fa-check"></i><b>7.2.1</b> 什么是数据集群？</a></li>
+<li class="chapter" data-level="7.2.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据集中集群"><i class="fa fa-check"></i><b>7.2.2</b> <strong>1. 数据集中集群</strong></a></li>
+<li class="chapter" data-level="7.2.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据分散集群"><i class="fa fa-check"></i><b>7.2.3</b> <strong>2. 数据分散集群</strong></a></li>
+<li class="chapter" data-level="7.2.4" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据分区"><i class="fa fa-check"></i><b>7.2.4</b> <strong>3. 数据分区</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#计算高可用设计"><i class="fa fa-check"></i><b>7.3</b> <strong>计算高可用设计</strong></a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#关键设计点"><i class="fa fa-check"></i><b>7.3.1</b> <strong>关键设计点</strong></a></li>
+<li class="chapter" data-level="7.3.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#常见的计算高可用架构"><i class="fa fa-check"></i><b>7.3.2</b> <strong>常见的计算高可用架构</strong></a></li>
+<li class="chapter" data-level="7.3.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#总结-3"><i class="fa fa-check"></i><b>7.3.3</b> <strong>总结</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="可拓展架构.html"><a href="可拓展架构.html"><i class="fa fa-check"></i><b>8</b> 可拓展架构</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="可拓展架构.html"><a href="可拓展架构.html#软件系统的可扩展性核心理念与实现"><i class="fa fa-check"></i><b>8.1</b> <strong>软件系统的可扩展性：核心理念与实现</strong></a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="可拓展架构.html"><a href="可拓展架构.html#可扩展性的核心挑战"><i class="fa fa-check"></i><b>8.1.1</b> <strong>可扩展性的核心挑战</strong></a></li>
+<li class="chapter" data-level="8.1.2" data-path="可拓展架构.html"><a href="可拓展架构.html#可扩展性的基本思想拆分"><i class="fa fa-check"></i><b>8.1.2</b> <strong>可扩展性的基本思想：拆分</strong></a></li>
+<li class="chapter" data-level="8.1.3" data-path="可拓展架构.html"><a href="可拓展架构.html#三种常见的拆分思路"><i class="fa fa-check"></i><b>8.1.3</b> <strong>三种常见的拆分思路</strong></a></li>
+<li class="chapter" data-level="8.1.4" data-path="可拓展架构.html"><a href="可拓展架构.html#案例解析tcpip-协议栈"><i class="fa fa-check"></i><b>8.1.4</b> <strong>案例解析：TCP/IP 协议栈</strong></a></li>
+<li class="chapter" data-level="8.1.5" data-path="可拓展架构.html"><a href="可拓展架构.html#案例解析学生信息管理系统"><i class="fa fa-check"></i><b>8.1.5</b> <strong>案例解析：学生信息管理系统</strong></a></li>
+<li class="chapter" data-level="8.1.6" data-path="可拓展架构.html"><a href="可拓展架构.html#拆分方式的影响可扩展性"><i class="fa fa-check"></i><b>8.1.6</b> <strong>拆分方式的影响：可扩展性</strong></a></li>
+<li class="chapter" data-level="8.1.7" data-path="可拓展架构.html"><a href="可拓展架构.html#常见可扩展架构"><i class="fa fa-check"></i><b>8.1.7</b> <strong>常见可扩展架构</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构"><i class="fa fa-check"></i><b>8.2</b> <strong>分层架构</strong></a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的多样性"><i class="fa fa-check"></i><b>8.2.1</b> <strong>分层架构的多样性</strong></a></li>
+<li class="chapter" data-level="8.2.2" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的设计核心"><i class="fa fa-check"></i><b>8.2.2</b> <strong>分层架构的设计核心</strong></a></li>
+<li class="chapter" data-level="8.2.3" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的优势"><i class="fa fa-check"></i><b>8.2.3</b> <strong>分层架构的优势</strong></a></li>
+<li class="chapter" data-level="8.2.4" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的局限性"><i class="fa fa-check"></i><b>8.2.4</b> <strong>分层架构的局限性</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="可拓展架构.html"><a href="可拓展架构.html#soa面向服务架构"><i class="fa fa-check"></i><b>8.3</b> <strong>SOA（面向服务架构）</strong></a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的核心概念"><i class="fa fa-check"></i><b>8.3.1</b> <strong>SOA 的核心概念</strong></a></li>
+<li class="chapter" data-level="8.3.2" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的优势"><i class="fa fa-check"></i><b>8.3.2</b> <strong>SOA 的优势</strong></a></li>
+<li class="chapter" data-level="8.3.3" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的挑战"><i class="fa fa-check"></i><b>8.3.3</b> <strong>SOA 的挑战</strong></a></li>
+<li class="chapter" data-level="8.3.4" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的典型架构"><i class="fa fa-check"></i><b>8.3.4</b> <strong>SOA 的典型架构</strong></a></li>
+<li class="chapter" data-level="8.3.5" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的局限性"><i class="fa fa-check"></i><b>8.3.5</b> <strong>SOA 的局限性</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务炙手可热的架构设计理念"><i class="fa fa-check"></i><b>8.4</b> <strong>微服务：炙手可热的架构设计理念</strong></a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务与-soa-的关系"><i class="fa fa-check"></i><b>8.4.1</b> <strong>微服务与 SOA 的关系</strong></a></li>
+<li class="chapter" data-level="8.4.2" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-与微服务的主要区别"><i class="fa fa-check"></i><b>8.4.2</b> <strong>SOA 与微服务的主要区别</strong></a></li>
+<li class="chapter" data-level="8.4.3" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务的陷阱与挑战"><i class="fa fa-check"></i><b>8.4.3</b> <strong>微服务的陷阱与挑战</strong></a></li>
+<li class="chapter" data-level="8.4.4" data-path="可拓展架构.html"><a href="可拓展架构.html#总结-4"><i class="fa fa-check"></i><b>8.4.4</b> <strong>总结</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="架构模版.html"><a href="架构模版.html"><i class="fa fa-check"></i><b>9</b> 架构模版</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="架构模版.html"><a href="架构模版.html#存储技术架构"><i class="fa fa-check"></i><b>9.1</b> 存储技术架构</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="架构模版.html"><a href="架构模版.html#sql"><i class="fa fa-check"></i><b>9.1.1</b> SQL</a></li>
+<li class="chapter" data-level="9.1.2" data-path="架构模版.html"><a href="架构模版.html#nosql-1"><i class="fa fa-check"></i><b>9.1.2</b> NoSQL</a></li>
+<li class="chapter" data-level="9.1.3" data-path="架构模版.html"><a href="架构模版.html#小文件存储"><i class="fa fa-check"></i><b>9.1.3</b> 小文件存储</a></li>
+<li class="chapter" data-level="9.1.4" data-path="架构模版.html"><a href="架构模版.html#大文件存储"><i class="fa fa-check"></i><b>9.1.4</b> 大文件存储</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="架构模版.html"><a href="架构模版.html#开发层和服务层技术"><i class="fa fa-check"></i><b>9.2</b> 开发层和服务层技术</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="架构模版.html"><a href="架构模版.html#开发层技术"><i class="fa fa-check"></i><b>9.2.1</b> 开发层技术</a></li>
+<li class="chapter" data-level="9.2.2" data-path="架构模版.html"><a href="架构模版.html#开发框架"><i class="fa fa-check"></i><b>9.2.2</b> 开发框架</a></li>
+<li class="chapter" data-level="9.2.3" data-path="架构模版.html"><a href="架构模版.html#服务层技术"><i class="fa fa-check"></i><b>9.2.3</b> 服务层技术</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="架构模版.html"><a href="架构模版.html#网络层技术"><i class="fa fa-check"></i><b>9.3</b> 网络层技术</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="架构模版.html"><a href="架构模版.html#负载均衡"><i class="fa fa-check"></i><b>9.3.1</b> 负载均衡</a></li>
+<li class="chapter" data-level="9.3.2" data-path="架构模版.html"><a href="架构模版.html#cdn"><i class="fa fa-check"></i><b>9.3.2</b> CDN</a></li>
+<li class="chapter" data-level="9.3.3" data-path="架构模版.html"><a href="架构模版.html#多机房"><i class="fa fa-check"></i><b>9.3.3</b> 多机房</a></li>
+<li class="chapter" data-level="9.3.4" data-path="架构模版.html"><a href="架构模版.html#多中心"><i class="fa fa-check"></i><b>9.3.4</b> 多中心</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="架构模版.html"><a href="架构模版.html#用户层和业务层技术"><i class="fa fa-check"></i><b>9.4</b> 用户层和业务层技术</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="架构模版.html"><a href="架构模版.html#用户层技术"><i class="fa fa-check"></i><b>9.4.1</b> 用户层技术</a></li>
+<li class="chapter" data-level="9.4.2" data-path="架构模版.html"><a href="架构模版.html#业务层技术"><i class="fa fa-check"></i><b>9.4.2</b> 业务层技术</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="架构模版.html"><a href="架构模版.html#平台技术"><i class="fa fa-check"></i><b>9.5</b> 平台技术</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="架构模版.html"><a href="架构模版.html#运维平台"><i class="fa fa-check"></i><b>9.5.1</b> 运维平台</a></li>
+<li class="chapter" data-level="9.5.2" data-path="架构模版.html"><a href="架构模版.html#测试平台"><i class="fa fa-check"></i><b>9.5.2</b> 测试平台</a></li>
+<li class="chapter" data-level="9.5.3" data-path="架构模版.html"><a href="架构模版.html#数据平台"><i class="fa fa-check"></i><b>9.5.3</b> 数据平台</a></li>
+<li class="chapter" data-level="9.5.4" data-path="架构模版.html"><a href="架构模版.html#管理平台"><i class="fa fa-check"></i><b>9.5.4</b> 管理平台</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="架构设计模版.html"><a href="架构设计模版.html"><i class="fa fa-check"></i><b>10</b> 架构设计模版</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案模板优化版"><i class="fa fa-check"></i><b>10.1</b> <strong>备选方案模板优化版</strong></a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="架构设计模版.html"><a href="架构设计模版.html#需求介绍"><i class="fa fa-check"></i><b>10.1.1</b> ** 需求介绍**</a></li>
+<li class="chapter" data-level="10.1.2" data-path="架构设计模版.html"><a href="架构设计模版.html#需求分析"><i class="fa fa-check"></i><b>10.1.2</b> ** 需求分析**</a></li>
+<li class="chapter" data-level="10.1.3" data-path="架构设计模版.html"><a href="架构设计模版.html#复杂度分析"><i class="fa fa-check"></i><b>10.1.3</b> ** 复杂度分析**</a></li>
+<li class="chapter" data-level="10.1.4" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案"><i class="fa fa-check"></i><b>10.1.4</b> ** 备选方案**</a></li>
+<li class="chapter" data-level="10.1.5" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案评估"><i class="fa fa-check"></i><b>10.1.5</b> ** 备选方案评估**</a></li>
+<li class="chapter" data-level="10.1.6" data-path="架构设计模版.html"><a href="架构设计模版.html#最终架构设计"><i class="fa fa-check"></i><b>10.1.6</b> ** 最终架构设计**</a></li>
+<li class="chapter" data-level="10.1.7" data-path="架构设计模版.html"><a href="架构设计模版.html#核心设计与流程"><i class="fa fa-check"></i><b>10.1.7</b> <strong>核心设计与流程</strong></a></li>
+<li class="chapter" data-level="10.1.8" data-path="架构设计模版.html"><a href="架构设计模版.html#部署方案"><i class="fa fa-check"></i><b>10.1.8</b> <strong>部署方案</strong></a></li>
+<li class="chapter" data-level="10.1.9" data-path="架构设计模版.html"><a href="架构设计模版.html#演进规划"><i class="fa fa-check"></i><b>10.1.9</b> <strong>演进规划</strong></a></li>
+<li class="chapter" data-level="10.1.10" data-path="架构设计模版.html"><a href="架构设计模版.html#总结-5"><i class="fa fa-check"></i><b>10.1.10</b> <strong>总结</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="架构设计模版.html"><a href="架构设计模版.html#话架构图"><i class="fa fa-check"></i><b>10.2</b> 话架构图</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="架构设计模版.html"><a href="架构设计模版.html#视图软件架构的经典模型"><i class="fa fa-check"></i><b>10.2.1</b> <strong>4+1 视图：软件架构的经典模型</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/liamamilin" target="blank">这是一本讲架构的书籍</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">深入浅出架构</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">深入浅出架构</h1>
+<p class="author"><em>Liam</em></p>
+<p class="date"><em>2024-11-16</em></p>
+</div>
+<div id="什么是架构" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> 什么是架构<a href="index.html#什么是架构" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>对于技术人员来说，“架构”是一个再常见不过的词了。我们会对新员工培训整个系统的架构，参加架构设计评审，学习业界开源系统（例如MySQL和Hadoop）的架构，研究大公司的架构实现（例如微信架构和淘宝架构）……</p>
+<p>虽然“架构”这个词很常见，但如果深究一下，“架构”到底是指什么，大部分人就搞不清楚了。例如以下这些问题，你能够准确地回答吗？</p>
+<p>要想准确地理解架构的定义，关键就在于把三组容易混淆的概念梳理清楚：</p>
+<ol style="list-style-type: decimal">
+<li>系统与子系统</li>
+<li>模块与组件</li>
+<li>框架与架构</li>
+</ol>
+<div id="系统与子系统" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> 系统与子系统<a href="index.html#系统与子系统" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="系统和子系统的定义" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> <strong>系统和子系统的定义</strong><a href="index.html#系统和子系统的定义" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="什么是系统" class="section level4 hasAnchor" number="1.1.1.1">
+<h4><span class="header-section-number">1.1.1.1</span> <strong>1. 什么是系统？</strong><a href="index.html#什么是系统" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>系统</strong>是指由<strong>相互关联</strong>、<strong>相互作用</strong>的多个部分（或要素）组成的一个有机整体。这些部分共同协作，完成某种特定的功能或目标。</p>
+<ul>
+<li><strong>特性</strong>：
+<ul>
+<li><strong>整体性</strong>：系统的整体功能不是各部分简单功能的叠加，而是各部分协同作用的结果。</li>
+<li><strong>结构性</strong>：系统由若干个有特定功能的部分或单元组成，这些部分通过一定的组织方式结合在一起。</li>
+<li><strong>目标性</strong>：系统的存在是为实现某种目标或功能。</li>
+<li><strong>动态性</strong>：系统内部各部分之间存在相互作用，并随着环境的变化发生动态调整。</li>
+<li><strong>开放性</strong>：大多数系统都与外部环境进行能量、物质或信息的交换。</li>
+</ul></li>
+<li><strong>实例</strong>：
+<ul>
+<li><strong>自然系统</strong>：生态系统、太阳系等。</li>
+<li><strong>技术系统</strong>：交通系统、计算机系统等。</li>
+<li><strong>社会系统</strong>：教育系统、经济系统等。</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="什么是子系统" class="section level4 hasAnchor" number="1.1.1.2">
+<h4><span class="header-section-number">1.1.1.2</span> <strong>2. 什么是子系统？</strong><a href="index.html#什么是子系统" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>子系统</strong>是指一个系统的组成部分。换句话说，当一个复杂系统被分解成若干层次或模块时，每一个模块本身又可以看作一个<strong>相对独立的系统</strong>，这就是子系统。</p>
+<ul>
+<li><strong>特性</strong>：
+<ul>
+<li><strong>相对独立性</strong>：子系统可以有自己的结构和功能，可以独立运行。</li>
+<li><strong>从属性</strong>：子系统是整体系统的一部分，它的存在和功能是为了支持整体系统的目标。</li>
+<li><strong>层次性</strong>：系统可以有多个子系统，而子系统本身也可能包含更小的子系统。</li>
+</ul></li>
+<li><strong>实例</strong>：
+<ul>
+<li><strong>计算机系统</strong>：操作系统是计算机系统的一个子系统，文件管理又是操作系统的子系统。</li>
+<li><strong>汽车系统</strong>：汽车系统包括发动机系统、制动系统、电控系统等子系统。</li>
+<li><strong>企业系统</strong>：一个企业系统可以包含生产系统、营销系统、人力资源系统等子系统。</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="系统和子系统的关系" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> <strong>系统和子系统的关系</strong><a href="index.html#系统和子系统的关系" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>整体与部分的关系</strong>：子系统是系统的组成部分，系统是子系统的整体。子系统必须通过协作，支持系统的整体功能。</li>
+<li><strong>层次结构</strong>：系统可以被分解为子系统，子系统本身也可以进一步分解成更小的子系统。例如，一个国家是一个系统，省份是它的子系统，而省份的城市又是子系统。</li>
+<li><strong>功能依赖性</strong>：子系统的功能是为了支撑系统整体的功能。一个子系统的效率或状态可能直接影响整体系统的运作。</li>
+<li><strong>信息和资源流动</strong>：系统和子系统之间通过信息、能量或资源的交换保持相互联系。</li>
+</ol>
+<hr />
+</div>
+<div id="举例说明" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> <strong>举例说明</strong><a href="index.html#举例说明" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="案例-1交通系统" class="section level4 hasAnchor" number="1.1.3.1">
+<h4><span class="header-section-number">1.1.3.1</span> <strong>案例 1：交通系统</strong><a href="index.html#案例-1交通系统" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>系统</strong>：交通系统</li>
+<li><strong>子系统</strong>：
+<ol style="list-style-type: decimal">
+<li>公路系统</li>
+<li>铁路系统</li>
+<li>航空系统</li>
+<li>水运系统</li>
+</ol></li>
+</ul>
+<p>每个子系统内部又可以进一步分解，比如公路系统可以分为高速公路、城市道路和农村公路。</p>
+<hr />
+</div>
+<div id="案例-2人体系统" class="section level4 hasAnchor" number="1.1.3.2">
+<h4><span class="header-section-number">1.1.3.2</span> <strong>案例 2：人体系统</strong><a href="index.html#案例-2人体系统" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>系统</strong>：人体</li>
+<li><strong>子系统</strong>：
+<ol style="list-style-type: decimal">
+<li>呼吸系统</li>
+<li>循环系统</li>
+<li>消化系统</li>
+<li>神经系统</li>
+</ol></li>
+</ul>
+<p>每个子系统都有其独特的功能，但所有系统协同工作，保证人体的正常运作。</p>
+<hr />
+<p>一个系统的架构，只包括顶层这一个层级的架构，而不包括下属子系统层级的架构。所以微信架构，就是指微信系统这个层级的架构。当然，微信的子系统，比如支付系统，也有它自己的架构，同样只包括顶层。</p>
+</div>
+</div>
+</div>
+<div id="模块与组件" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> 模块与组件<a href="index.html#模块与组件" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="模块与组件的区别从抽象到实际" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> 模块与组件的区别：从抽象到实际<a href="index.html#模块与组件的区别从抽象到实际" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>在实际工作中，<strong>模块</strong>和<strong>组件</strong>这两个概念经常被混淆。我们常常听到类似以下的说法：</p>
+<ul>
+<li><strong>MySQL模块</strong>主要负责存储数据，而<strong>Elasticsearch模块</strong>主要负责数据搜索。</li>
+<li>我们有<strong>安全加密组件</strong>和<strong>审核组件</strong>。</li>
+<li><strong>App的下载模块</strong>使用了第三方的<strong>组件</strong>。</li>
+</ul>
+<p>为什么这些表述中模块与组件的用法容易混淆？根本原因在于，模块和组件的定义并不直观，且两者的边界常常模糊。我们需要从本质上理解它们的区别。</p>
+<hr />
+</div>
+<div id="维基百科的定义" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> 维基百科的定义<a href="index.html#维基百科的定义" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="模块module" class="section level4 hasAnchor" number="1.2.2.1">
+<h4><span class="header-section-number">1.2.2.1</span> <strong>模块（Module）</strong><a href="index.html#模块module" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<blockquote>
+<p>模块是一套<strong>一致且紧密关联的软件组织</strong>，通常包含程序和数据结构两部分。模块作为<strong>合成的单位</strong>，其接口定义了模块提供的功能以及调用它所需的元素。模块具有独立开发、重用、协作编写和研究的特点。</p>
+</blockquote>
+</div>
+<div id="组件component" class="section level4 hasAnchor" number="1.2.2.2">
+<h4><span class="header-section-number">1.2.2.2</span> <strong>组件（Component）</strong><a href="index.html#组件component" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<blockquote>
+<p>组件是一个<strong>自包含、可编程、可重用、与语言无关的单元</strong>。组件可以很容易被组装到应用程序中，是一种强调复用性和物理独立性的概念。</p>
+</blockquote>
+<hr />
+</div>
+</div>
+<div id="模块与组件的核心区别" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> 模块与组件的核心区别<a href="index.html#模块与组件的核心区别" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>如果光看定义，你可能还是感到迷茫。那么我们换一种更直观的解释：<strong>模块和组件本质上是系统的组成部分，但它们是从不同的视角拆分系统的结果</strong>。</p>
+<ul>
+<li><strong>模块</strong>是从<strong>业务逻辑</strong>的角度来拆分系统。它主要体现的是系统的<strong>功能划分</strong>，其目的在于职责分离。</li>
+<li><strong>组件</strong>是从<strong>物理部署</strong>的角度来拆分系统。它主要体现的是系统的<strong>运行环境和物理实现</strong>，其目的在于单元复用。</li>
+</ul>
+<hr />
+</div>
+<div id="形象的理解模块-vs.-组件" class="section level3 hasAnchor" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> 形象的理解：模块 vs. 组件<a href="index.html#形象的理解模块-vs.-组件" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>模块更倾向于逻辑上的抽象，而组件则强调实际的物理实现。一个简单的类比是：</p>
+<ul>
+<li><strong>模块</strong>：像一本书的章节，从内容逻辑上划分功能，每一章负责特定的主题。</li>
+<li><strong>组件</strong>：像书的装订部分，是实际可触摸的物理构造，如封面、纸张和装订方式。</li>
+</ul>
+<p>其实，英文中的 <strong>“component”</strong> 翻译成中文时，也可以理解为“零件”。零件是物理概念，强调独立性和可替换性，这个特点非常贴合组件的含义。</p>
+<hr />
+</div>
+<div id="示例分析学生信息管理系统" class="section level3 hasAnchor" number="1.2.5">
+<h3><span class="header-section-number">1.2.5</span> 示例分析：学生信息管理系统<a href="index.html#示例分析学生信息管理系统" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>假设我们设计一个学生信息管理系统，这个系统既可以从逻辑层面拆分，也可以从物理层面拆分：</p>
+<ol style="list-style-type: decimal">
+<li><strong>从逻辑角度（模块）拆分</strong>：
+<ul>
+<li><strong>登录注册模块</strong>：负责用户登录和注册功能。</li>
+<li><strong>个人信息模块</strong>：负责存储和展示学生的个人信息。</li>
+<li><strong>个人成绩模块</strong>：负责管理学生的成绩信息。</li>
+</ul></li>
+<li><strong>从物理角度（组件）拆分</strong>：
+<ul>
+<li><strong>Nginx</strong>：作为反向代理服务器。</li>
+<li><strong>Web服务器</strong>：用于处理业务逻辑。</li>
+<li><strong>MySQL</strong>：作为数据存储系统。</li>
+</ul></li>
+</ol>
+<p>模块体现的是功能划分，而组件则是实际实现功能的物理单位。</p>
+<hr />
+</div>
+<div id="实际应用模块和组件如何协同" class="section level3 hasAnchor" number="1.2.6">
+<h3><span class="header-section-number">1.2.6</span> 实际应用：模块和组件如何协同？<a href="index.html#实际应用模块和组件如何协同" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>如果你是一名业务系统的架构师，在构建系统时，需要同时考虑模块和组件的设计：</p>
+<ol style="list-style-type: decimal">
+<li><strong>模块的设计</strong>：
+<ul>
+<li>从业务逻辑的角度出发，明确系统需要哪些功能单元（模块）。<br />
+</li>
+<li>比如，将系统划分为“登录注册模块”“个人信息模块”等，以便于职责分离和逻辑清晰。</li>
+</ul></li>
+<li><strong>组件的选择</strong>：
+<ul>
+<li>从物理部署的角度出发，确定实现模块功能所需的技术组件。<br />
+</li>
+<li>比如，选择 MySQL 作为存储组件，但无需关心其内部架构（如 Parser、Optimizer、Caches &amp; Buffers、Storage Engines 等）。</li>
+</ul></li>
+</ol>
+<hr />
+</div>
+<div id="总结" class="section level3 hasAnchor" number="1.2.7">
+<h3><span class="header-section-number">1.2.7</span> 总结<a href="index.html#总结" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>模块</strong>强调的是业务逻辑，是从“<strong>职责分离</strong>”的角度进行系统拆分。<br />
+</li>
+<li><strong>组件</strong>强调的是物理实现，是从“<strong>复用性和运行环境</strong>”的角度进行系统拆分。</li>
+</ul>
+<p>在实际工作中，我们需要先从业务逻辑的角度定义模块，再从物理实现的角度选择适合的组件。两者协同工作，共同构建一个高效且可扩展的系统。</p>
+</div>
+</div>
+<div id="框架与架构" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> 框架与架构<a href="index.html#框架与架构" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="框架与架构定义与区别" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> 框架与架构：定义与区别<a href="index.html#框架与架构定义与区别" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>框架和架构是两个非常相似且紧密相关的概念，因此在实际工作中，它们经常被混淆。为了厘清这两个术语的区别，我们可以参考维基百科的定义，并结合实际例子加以说明。</p>
+<hr />
+</div>
+<div id="框架framework的定义与特点" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> <strong>框架（Framework）的定义与特点</strong><a href="index.html#框架framework的定义与特点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>框架，通常是指为了<strong>实现某种业界标准或完成某些基础任务</strong>而提供的软件组件规范，同时也可以指<strong>实现这些规范所需的基础功能的具体软件产品</strong>。</p>
+<p>总结关键点：</p>
+<ol style="list-style-type: decimal">
+<li><strong>框架是一种组件规范</strong>：
+<ul>
+<li>比如，MVC（Model-View-Controller）是一个常见的开发规范，类似的还有 MVP、MVVM、J2EE 等。<br />
+</li>
+<li>这些规范为开发者提供了一种标准化的方法去设计和组织代码。</li>
+</ul></li>
+<li><strong>框架是具体的实现工具</strong>：
+<ul>
+<li>比如，Spring MVC 是实现 MVC 的开发框架。<br />
+</li>
+<li>除了满足 MVC 规范，Spring 提供了许多额外的基础功能，例如注解（<span class="citation">@Controller</span>）、Spring Security、Spring JPA 等，极大地简化了开发流程。</li>
+</ul></li>
+</ol>
+<hr />
+</div>
+<div id="架构architecture的定义与特点" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> <strong>架构（Architecture）的定义与特点</strong><a href="index.html#架构architecture的定义与特点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>架构指的是<strong>软件系统的基础结构</strong>，以及构建这些基础结构的<strong>原则和规则</strong>，并且包括对这些结构的描述。</p>
+<p>架构强调的是系统从整体层面的<strong>结构化设计</strong>，关注的是如何组织系统的各个部分以实现功能和非功能需求（如性能、扩展性）。</p>
+<hr />
+</div>
+<div id="框架-vs.-架构" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> <strong>框架 vs. 架构</strong><a href="index.html#框架-vs.-架构" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>从定义上看，框架和架构的区别相对清晰：</p>
+<ul>
+<li><strong>框架关注“规范”</strong>：框架定义了一套规则或方法，用于指导开发工作，并提供了一些工具和功能来实现这些规则。</li>
+<li><strong>架构关注“结构”</strong>：架构描述了系统从更高层次上如何组织，是一种对系统整体设计的抽象视角。</li>
+</ul>
+<hr />
+</div>
+<div id="混用与实际说法的误区" class="section level3 hasAnchor" number="1.3.5">
+<h3><span class="header-section-number">1.3.5</span> <strong>混用与实际说法的误区</strong><a href="index.html#混用与实际说法的误区" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>尽管定义上有明确的区别，在实际工作中，这两个概念常常被混用。例如：</p>
+<ul>
+<li>“我们的系统是 MVC 架构。”<br />
+</li>
+<li>“我们需要将 Android App 重构为 MVP 架构。”<br />
+</li>
+<li>“我们的系统基于 SSH 框架开发。”<br />
+</li>
+<li>“这是 SSH 的架构。”<br />
+</li>
+<li>“XX 系统是基于 Spring MVC 框架开发的，遵循标准的 MVC 架构。”</li>
+</ul>
+<p><strong>这些说法都没有问题！</strong></p>
+<p>为什么看似“混淆”的说法其实也能成立呢？关键在于架构的定义中提到的“<strong>基础结构</strong>”这一概念，它并没有明确说明应该从哪个维度来定义“结构”。我们可以从不同的角度（如逻辑、物理、功能）对系统进行分解，因而“架构”这一概念是多维度的。框架作为一种实现工具，可以成为架构的一个组成部分。</p>
+<hr />
+</div>
+<div id="结合示例模块与组件的延展" class="section level3 hasAnchor" number="1.3.6">
+<h3><span class="header-section-number">1.3.6</span> <strong>结合示例：模块与组件的延展</strong><a href="index.html#结合示例模块与组件的延展" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>以“学生管理系统”为例：</p>
+<ol style="list-style-type: decimal">
+<li><strong>从业务逻辑的角度看架构</strong>：
+<ul>
+<li>系统架构可以分为“登录注册模块”“个人信息模块”“成绩管理模块”等，这是功能划分的架构视角。</li>
+</ul></li>
+<li><strong>从实现工具的角度看框架</strong>：
+<ul>
+<li>这些模块可能基于 Spring MVC 框架开发，而 Spring MVC 提供了遵循 MVC 规范的工具和基础功能。</li>
+</ul></li>
+</ol>
+<p>从这个角度看，“MVC 架构”描述了系统的逻辑设计方式，而“Spring MVC 框架”描述了实现这种设计的具体工具。因此，说“我们的系统是基于 Spring MVC 框架开发，采用了标准的 MVC 架构”是完全合理的。</p>
+<hr />
+</div>
+<div id="总结-1" class="section level3 hasAnchor" number="1.3.7">
+<h3><span class="header-section-number">1.3.7</span> <strong>总结</strong><a href="index.html#总结-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>框架（Framework）</strong> 是一种<strong>规范</strong>，并通过具体工具为开发者提供功能支持。<br />
+</li>
+<li><strong>架构（Architecture）</strong> 是系统的<strong>整体结构设计</strong>，从多角度描述系统的组织方式。</li>
+</ul>
+<p>在实际工作中，框架与架构的界限可能模糊，但理解两者的核心区别有助于更准确地进行系统设计和沟通。</p>
+</div>
+</div>
+<div id="r架构" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> 4R架构<a href="index.html#r架构" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>软件架构指软件系统的顶层（Rank）结构，它定义了系统由哪些角色（Role）组成，角色之间的关系（Relation）和运作规则（Rule）。</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/670a502889683719f63846762a710ec1.jpg" /></p>
+<p>因为这个定义中的4个关键词，都可以用R开头的英文单词来表示，分别是Rank、Role、Relation和Rule，所以我把定义简称为“4R架构定义”，每个R的详细解释如下。</p>
+<p>第一个R，Rank。它是指软件架构是分层的，对应“系统”和“子系统”的分层关系。通常情况下，我们只需要关注某一层的架构，最多展示相邻两层的架构，而不需要把每一层的架构全部糅杂在一起。无论是架构设计还是画架构图，都应该采取“自顶向下，逐步细化”的方式。以微信为例，Rank的含义如下所示：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/452ce48209b1e9ea77484e68dbb8f0b1.jpg" /></p>
+<p>注：L012指层级，一个L0往下可以分解多个L1，一个L1可以往下分解多个L2，以此类推，一般建议不超过5层（L0~L4）。</p>
+<p>第二个R，Role。它是指软件系统包含哪些角色，每个角色都会负责系统的一部分功能。架构设计最重要的工作之一就是将系统拆分为多个角色。最常见的微服务拆分其实就是将整体复杂的业务系统按照业务领域的方式，拆分为多个微服务，每个微服务就是系统的一个角色。</p>
+<p>第三个R，Relation。它是指软件系统的角色之间的关系，对应到架构图中其实就是连接线，角色之间的关系不能乱连，任何关系最后都需要代码来实现，包括连接方式（HTTP、TCP、UDP和串口等）、数据协议（JSON、XML和二进制等）以及具体的接口等。</p>
+<p>第四个R，Rule。它是指软件系统角色之间如何协作来完成系统功能。我们在前面解读什么是“系统”的时候提到过：系统能力不是个体能力之和，而是产生了新的能力。那么这个新能力具体如何完成的呢？具体哪些角色参与了这个新能力呢？这就是Rule所要表达的内容。在架构设计的时候，核心的业务场景都需要设计Rule。</p>
+<p>在实际工作中，为了方便理解，Rank、Role和Relation是通过系统架构图来展示的，而Rule是通过系统序列图（System Sequence Diagram）来展示的。</p>
+<p>我们以一个简化的支付系统为例，支付系统架构图如下所示：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/952cdceaa1bd5ed9f5fb039733dabafc.jpg" /></p>
+<p>“扫码支付”这个核心场景的系统序列图如下所示：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/0e7a35a01b62e5590566c09eff6b19ea.jpg" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="架构设计历史.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

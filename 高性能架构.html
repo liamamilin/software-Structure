@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 高性能架构 | 深入浅出架构</title>
+  <meta name="description" content="深入浅出的讲解什么是架构" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 高性能架构 | 深入浅出架构" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="深入浅出的讲解什么是架构" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 高性能架构 | 深入浅出架构" />
+  
+  <meta name="twitter:description" content="深入浅出的讲解什么是架构" />
+  
+
+<meta name="author" content="Liam" />
+
+
+<meta name="date" content="2024-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="架构设计.html"/>
+<link rel="next" href="高可用存储架构.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">这是一本讲架构的书籍</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> bibliography: [book.bib, packages.bib]</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#系统与子系统"><i class="fa fa-check"></i><b>1.1</b> 系统与子系统</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#系统和子系统的定义"><i class="fa fa-check"></i><b>1.1.1</b> <strong>系统和子系统的定义</strong></a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#系统和子系统的关系"><i class="fa fa-check"></i><b>1.1.2</b> <strong>系统和子系统的关系</strong></a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#举例说明"><i class="fa fa-check"></i><b>1.1.3</b> <strong>举例说明</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#模块与组件"><i class="fa fa-check"></i><b>1.2</b> 模块与组件</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#模块与组件的区别从抽象到实际"><i class="fa fa-check"></i><b>1.2.1</b> 模块与组件的区别：从抽象到实际</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#维基百科的定义"><i class="fa fa-check"></i><b>1.2.2</b> 维基百科的定义</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#模块与组件的核心区别"><i class="fa fa-check"></i><b>1.2.3</b> 模块与组件的核心区别</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#形象的理解模块-vs.-组件"><i class="fa fa-check"></i><b>1.2.4</b> 形象的理解：模块 vs. 组件</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#示例分析学生信息管理系统"><i class="fa fa-check"></i><b>1.2.5</b> 示例分析：学生信息管理系统</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#实际应用模块和组件如何协同"><i class="fa fa-check"></i><b>1.2.6</b> 实际应用：模块和组件如何协同？</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#总结"><i class="fa fa-check"></i><b>1.2.7</b> 总结</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#框架与架构"><i class="fa fa-check"></i><b>1.3</b> 框架与架构</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#框架与架构定义与区别"><i class="fa fa-check"></i><b>1.3.1</b> 框架与架构：定义与区别</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#框架framework的定义与特点"><i class="fa fa-check"></i><b>1.3.2</b> <strong>框架（Framework）的定义与特点</strong></a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#架构architecture的定义与特点"><i class="fa fa-check"></i><b>1.3.3</b> <strong>架构（Architecture）的定义与特点</strong></a></li>
+<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#框架-vs.-架构"><i class="fa fa-check"></i><b>1.3.4</b> <strong>框架 vs. 架构</strong></a></li>
+<li class="chapter" data-level="1.3.5" data-path="index.html"><a href="index.html#混用与实际说法的误区"><i class="fa fa-check"></i><b>1.3.5</b> <strong>混用与实际说法的误区</strong></a></li>
+<li class="chapter" data-level="1.3.6" data-path="index.html"><a href="index.html#结合示例模块与组件的延展"><i class="fa fa-check"></i><b>1.3.6</b> <strong>结合示例：模块与组件的延展</strong></a></li>
+<li class="chapter" data-level="1.3.7" data-path="index.html"><a href="index.html#总结-1"><i class="fa fa-check"></i><b>1.3.7</b> <strong>总结</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#r架构"><i class="fa fa-check"></i><b>1.4</b> 4R架构</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="架构设计历史.html"><a href="架构设计历史.html"><i class="fa fa-check"></i><b>2</b> 架构设计历史</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="架构设计历史.html"><a href="架构设计历史.html#机器语言1940年之前"><i class="fa fa-check"></i><b>2.1</b> 机器语言（1940年之前）</a></li>
+<li class="chapter" data-level="2.2" data-path="架构设计历史.html"><a href="架构设计历史.html#汇编语言20世纪40年代"><i class="fa fa-check"></i><b>2.2</b> 汇编语言（20世纪40年代）</a></li>
+<li class="chapter" data-level="2.3" data-path="架构设计历史.html"><a href="架构设计历史.html#高级语言20世纪50年代"><i class="fa fa-check"></i><b>2.3</b> 高级语言（20世纪50年代）</a></li>
+<li class="chapter" data-level="2.4" data-path="架构设计历史.html"><a href="架构设计历史.html#第一次软件危机与结构化程序设计20世纪60年代20世纪70年代"><i class="fa fa-check"></i><b>2.4</b> 第一次软件危机与结构化程序设计（20世纪60年代~20世纪70年代）</a></li>
+<li class="chapter" data-level="2.5" data-path="架构设计历史.html"><a href="架构设计历史.html#第二次软件危机与面向对象20世纪80年代"><i class="fa fa-check"></i><b>2.5</b> 第二次软件危机与面向对象（20世纪80年代）</a></li>
+<li class="chapter" data-level="2.6" data-path="架构设计历史.html"><a href="架构设计历史.html#软件架构的历史背景"><i class="fa fa-check"></i><b>2.6</b> 软件架构的历史背景</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html"><i class="fa fa-check"></i><b>3</b> 架构设计的真正目的</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高性能"><i class="fa fa-check"></i><b>3.1</b> 高性能</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#单机复杂度"><i class="fa fa-check"></i><b>3.1.1</b> 单机复杂度</a></li>
+<li class="chapter" data-level="3.1.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#集群的复杂度"><i class="fa fa-check"></i><b>3.1.2</b> 集群的复杂度</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用"><i class="fa fa-check"></i><b>3.2</b> 高可用</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#计算高可用"><i class="fa fa-check"></i><b>3.2.1</b> 计算高可用</a></li>
+<li class="chapter" data-level="3.2.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#存储高可用"><i class="fa fa-check"></i><b>3.2.2</b> 存储高可用</a></li>
+<li class="chapter" data-level="3.2.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用状态决策"><i class="fa fa-check"></i><b>3.2.3</b> 高可用状态决策</a></li>
+<li class="chapter" data-level="3.2.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高性能high-performance"><i class="fa fa-check"></i><b>3.2.4</b> 高性能（High Performance）</a></li>
+<li class="chapter" data-level="3.2.5" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#高可用high-availability"><i class="fa fa-check"></i><b>3.2.5</b> 高可用（High Availability）</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#可拓展性"><i class="fa fa-check"></i><b>3.3</b> 可拓展性</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#预测变化"><i class="fa fa-check"></i><b>3.3.1</b> 预测变化</a></li>
+<li class="chapter" data-level="3.3.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#年法则"><i class="fa fa-check"></i><b>3.3.2</b> 2年法则</a></li>
+<li class="chapter" data-level="3.3.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#应对变化"><i class="fa fa-check"></i><b>3.3.3</b> 应对变化</a></li>
+<li class="chapter" data-level="3.3.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#写2抄3重构原则"><i class="fa fa-check"></i><b>3.3.4</b> 1写2抄3重构原则</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#成本与安全"><i class="fa fa-check"></i><b>3.4</b> 成本与安全</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#成本"><i class="fa fa-check"></i><b>3.4.1</b> 成本</a></li>
+<li class="chapter" data-level="3.4.2" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#安全"><i class="fa fa-check"></i><b>3.4.2</b> 安全</a></li>
+<li class="chapter" data-level="3.4.3" data-path="架构设计的真正目的.html"><a href="架构设计的真正目的.html#规模"><i class="fa fa-check"></i><b>3.4.3</b> 规模</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="架构设计的原则.html"><a href="架构设计的原则.html"><i class="fa fa-check"></i><b>4</b> 架构设计的原则</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="架构设计的原则.html"><a href="架构设计的原则.html#合适原则"><i class="fa fa-check"></i><b>4.1</b> 合适原则</a></li>
+<li class="chapter" data-level="4.2" data-path="架构设计的原则.html"><a href="架构设计的原则.html#简单原则"><i class="fa fa-check"></i><b>4.2</b> 简单原则</a></li>
+<li class="chapter" data-level="4.3" data-path="架构设计的原则.html"><a href="架构设计的原则.html#演化原则"><i class="fa fa-check"></i><b>4.3</b> 演化原则</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="架构设计.html"><a href="架构设计.html"><i class="fa fa-check"></i><b>5</b> 架构设计</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="架构设计.html"><a href="架构设计.html#识别复杂度"><i class="fa fa-check"></i><b>5.1</b> 识别复杂度</a></li>
+<li class="chapter" data-level="5.2" data-path="架构设计.html"><a href="架构设计.html#设计备选方案"><i class="fa fa-check"></i><b>5.2</b> 设计备选方案</a></li>
+<li class="chapter" data-level="5.3" data-path="架构设计.html"><a href="架构设计.html#评估和选择备选方案"><i class="fa fa-check"></i><b>5.3</b> 评估和选择备选方案</a></li>
+<li class="chapter" data-level="5.4" data-path="架构设计.html"><a href="架构设计.html#详细方案设计"><i class="fa fa-check"></i><b>5.4</b> 详细方案设计</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="高性能架构.html"><a href="高性能架构.html"><i class="fa fa-check"></i><b>6</b> 高性能架构</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="高性能架构.html"><a href="高性能架构.html#读写分离原理"><i class="fa fa-check"></i><b>6.1</b> 读写分离原理</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="高性能架构.html"><a href="高性能架构.html#复制延迟"><i class="fa fa-check"></i><b>6.1.1</b> 复制延迟</a></li>
+<li class="chapter" data-level="6.1.2" data-path="高性能架构.html"><a href="高性能架构.html#分配机制"><i class="fa fa-check"></i><b>6.1.2</b> 分配机制</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="高性能架构.html"><a href="高性能架构.html#分库分表"><i class="fa fa-check"></i><b>6.2</b> 分库分表</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="高性能架构.html"><a href="高性能架构.html#业务分库"><i class="fa fa-check"></i><b>6.2.1</b> 业务分库</a></li>
+<li class="chapter" data-level="6.2.2" data-path="高性能架构.html"><a href="高性能架构.html#分表"><i class="fa fa-check"></i><b>6.2.2</b> 分表</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="高性能架构.html"><a href="高性能架构.html#nosql"><i class="fa fa-check"></i><b>6.3</b> NoSQL</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="高性能架构.html"><a href="高性能架构.html#k-v存储"><i class="fa fa-check"></i><b>6.3.1</b> K-V存储</a></li>
+<li class="chapter" data-level="6.3.2" data-path="高性能架构.html"><a href="高性能架构.html#文档数据库"><i class="fa fa-check"></i><b>6.3.2</b> 文档数据库</a></li>
+<li class="chapter" data-level="6.3.3" data-path="高性能架构.html"><a href="高性能架构.html#列式数据库"><i class="fa fa-check"></i><b>6.3.3</b> 列式数据库</a></li>
+<li class="chapter" data-level="6.3.4" data-path="高性能架构.html"><a href="高性能架构.html#全文搜索引擎"><i class="fa fa-check"></i><b>6.3.4</b> 全文搜索引擎</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="高性能架构.html"><a href="高性能架构.html#缓存"><i class="fa fa-check"></i><b>6.4</b> 缓存</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="高性能架构.html"><a href="高性能架构.html#缓存穿透"><i class="fa fa-check"></i><b>6.4.1</b> 缓存穿透</a></li>
+<li class="chapter" data-level="6.4.2" data-path="高性能架构.html"><a href="高性能架构.html#缓存雪崩"><i class="fa fa-check"></i><b>6.4.2</b> 缓存雪崩</a></li>
+<li class="chapter" data-level="6.4.3" data-path="高性能架构.html"><a href="高性能架构.html#缓存热点"><i class="fa fa-check"></i><b>6.4.3</b> 缓存热点</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="高性能架构.html"><a href="高性能架构.html#ppc-和tpc"><i class="fa fa-check"></i><b>6.5</b> PPC 和TPC</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="高性能架构.html"><a href="高性能架构.html#ppc"><i class="fa fa-check"></i><b>6.5.1</b> PPC</a></li>
+<li class="chapter" data-level="6.5.2" data-path="高性能架构.html"><a href="高性能架构.html#prefork"><i class="fa fa-check"></i><b>6.5.2</b> prefork</a></li>
+<li class="chapter" data-level="6.5.3" data-path="高性能架构.html"><a href="高性能架构.html#tpc"><i class="fa fa-check"></i><b>6.5.3</b> TPC</a></li>
+<li class="chapter" data-level="6.5.4" data-path="高性能架构.html"><a href="高性能架构.html#prethread"><i class="fa fa-check"></i><b>6.5.4</b> prethread</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="高性能架构.html"><a href="高性能架构.html#高效资源利用与事件处理"><i class="fa fa-check"></i><b>6.6</b> 高效资源利用与事件处理</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="高性能架构.html"><a href="高性能架构.html#为什么阻塞处理低效"><i class="fa fa-check"></i><b>6.6.1</b> 为什么阻塞处理低效？</a></li>
+<li class="chapter" data-level="6.6.2" data-path="高性能架构.html"><a href="高性能架构.html#非阻塞轮询优点与局限"><i class="fa fa-check"></i><b>6.6.2</b> 非阻塞轮询：优点与局限</a></li>
+<li class="chapter" data-level="6.6.3" data-path="高性能架构.html"><a href="高性能架构.html#io多路复用解决方案"><i class="fa fa-check"></i><b>6.6.3</b> ###I/O多路复用：解决方案</a></li>
+<li class="chapter" data-level="6.6.4" data-path="高性能架构.html"><a href="高性能架构.html#reactor-模式"><i class="fa fa-check"></i><b>6.6.4</b> ###Reactor 模式</a></li>
+<li class="chapter" data-level="6.6.5" data-path="高性能架构.html"><a href="高性能架构.html#reactor-模式的三种典型实现"><i class="fa fa-check"></i><b>6.6.5</b> ###Reactor 模式的三种典型实现</a></li>
+<li class="chapter" data-level="6.6.6" data-path="高性能架构.html"><a href="高性能架构.html#proactor-模式异步io的新高度"><i class="fa fa-check"></i><b>6.6.6</b> ###Proactor 模式：异步I/O的新高度</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="高性能架构.html"><a href="高性能架构.html#高性能集群与负载均衡详解"><i class="fa fa-check"></i><b>6.7</b> 高性能集群与负载均衡详解</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="高性能架构.html"><a href="高性能架构.html#高性能集群的背景与目标"><i class="fa fa-check"></i><b>6.7.1</b> 高性能集群的背景与目标</a></li>
+<li class="chapter" data-level="6.7.2" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡的概念与作用"><i class="fa fa-check"></i><b>6.7.2</b> 负载均衡的概念与作用</a></li>
+<li class="chapter" data-level="6.7.3" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡的分类"><i class="fa fa-check"></i><b>6.7.3</b> 负载均衡的分类</a></li>
+<li class="chapter" data-level="6.7.4" data-path="高性能架构.html"><a href="高性能架构.html#dns负载均衡"><i class="fa fa-check"></i><b>6.7.4</b> ###DNS负载均衡</a></li>
+<li class="chapter" data-level="6.7.5" data-path="高性能架构.html"><a href="高性能架构.html#硬件负载均衡"><i class="fa fa-check"></i><b>6.7.5</b> ###硬件负载均衡</a></li>
+<li class="chapter" data-level="6.7.6" data-path="高性能架构.html"><a href="高性能架构.html#软件负载均衡"><i class="fa fa-check"></i><b>6.7.6</b> ###软件负载均衡</a></li>
+<li class="chapter" data-level="6.7.7" data-path="高性能架构.html"><a href="高性能架构.html#组合使用负载均衡"><i class="fa fa-check"></i><b>6.7.7</b> ###组合使用负载均衡</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="高性能架构.html"><a href="高性能架构.html#负载均衡算法分类与解析"><i class="fa fa-check"></i><b>6.8</b> 负载均衡算法分类与解析</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="高性能架构.html"><a href="高性能架构.html#轮询算法"><i class="fa fa-check"></i><b>6.8.1</b> 1. ###轮询算法</a></li>
+<li class="chapter" data-level="6.8.2" data-path="高性能架构.html"><a href="高性能架构.html#加权轮询算法"><i class="fa fa-check"></i><b>6.8.2</b> 2. ###加权轮询算法</a></li>
+<li class="chapter" data-level="6.8.3" data-path="高性能架构.html"><a href="高性能架构.html#负载最低优先算法"><i class="fa fa-check"></i><b>6.8.3</b> 3. ###负载最低优先算法</a></li>
+<li class="chapter" data-level="6.8.4" data-path="高性能架构.html"><a href="高性能架构.html#性能最优类算法"><i class="fa fa-check"></i><b>6.8.4</b> 4. ###性能最优类算法</a></li>
+<li class="chapter" data-level="6.8.5" data-path="高性能架构.html"><a href="高性能架构.html#hash类算法"><i class="fa fa-check"></i><b>6.8.5</b> 5. ###Hash类算法</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="高性能架构.html"><a href="高性能架构.html#cap-定理简介"><i class="fa fa-check"></i><b>6.9</b> CAP 定理简介</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="高性能架构.html"><a href="高性能架构.html#cap-定义的困惑"><i class="fa fa-check"></i><b>6.9.1</b> CAP 定义的困惑</a></li>
+<li class="chapter" data-level="6.9.2" data-path="高性能架构.html"><a href="高性能架构.html#cap-定理的两版解释"><i class="fa fa-check"></i><b>6.9.2</b> CAP 定理的两版解释</a></li>
+<li class="chapter" data-level="6.9.3" data-path="高性能架构.html"><a href="高性能架构.html#cap-三要素的详细解析"><i class="fa fa-check"></i><b>6.9.3</b> CAP 三要素的详细解析</a></li>
+<li class="chapter" data-level="6.9.4" data-path="高性能架构.html"><a href="高性能架构.html#cap-理论的实际应用"><i class="fa fa-check"></i><b>6.9.4</b> CAP 理论的实际应用</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="高性能架构.html"><a href="高性能架构.html#fmea-方法简介"><i class="fa fa-check"></i><b>6.10</b> FMEA 方法简介</a>
+<ul>
+<li class="chapter" data-level="6.10.1" data-path="高性能架构.html"><a href="高性能架构.html#fmea-方法的具体应用"><i class="fa fa-check"></i><b>6.10.1</b> FMEA 方法的具体应用</a></li>
+<li class="chapter" data-level="6.10.2" data-path="高性能架构.html"><a href="高性能架构.html#fmea-实战用户管理系统案例"><i class="fa fa-check"></i><b>6.10.2</b> FMEA 实战：用户管理系统案例</a></li>
+<li class="chapter" data-level="6.10.3" data-path="高性能架构.html"><a href="高性能架构.html#总结-2"><i class="fa fa-check"></i><b>6.10.3</b> 总结</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="高可用存储架构.html"><a href="高可用存储架构.html"><i class="fa fa-check"></i><b>7</b> 高可用存储架构</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#存储高可用方案"><i class="fa fa-check"></i><b>7.1</b> 存储高可用方案</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主备复制架构"><i class="fa fa-check"></i><b>7.1.1</b> 1. 主备复制架构</a></li>
+<li class="chapter" data-level="7.1.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主从复制架构"><i class="fa fa-check"></i><b>7.1.2</b> 2. 主从复制架构</a></li>
+<li class="chapter" data-level="7.1.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#双机切换架构"><i class="fa fa-check"></i><b>7.1.3</b> 3. 双机切换架构</a></li>
+<li class="chapter" data-level="7.1.4" data-path="高可用存储架构.html"><a href="高可用存储架构.html#主主复制架构"><i class="fa fa-check"></i><b>7.1.4</b> 4. 主主复制架构</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据集群架构详解"><i class="fa fa-check"></i><b>7.2</b> 数据集群架构详解</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#什么是数据集群"><i class="fa fa-check"></i><b>7.2.1</b> 什么是数据集群？</a></li>
+<li class="chapter" data-level="7.2.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据集中集群"><i class="fa fa-check"></i><b>7.2.2</b> <strong>1. 数据集中集群</strong></a></li>
+<li class="chapter" data-level="7.2.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据分散集群"><i class="fa fa-check"></i><b>7.2.3</b> <strong>2. 数据分散集群</strong></a></li>
+<li class="chapter" data-level="7.2.4" data-path="高可用存储架构.html"><a href="高可用存储架构.html#数据分区"><i class="fa fa-check"></i><b>7.2.4</b> <strong>3. 数据分区</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#计算高可用设计"><i class="fa fa-check"></i><b>7.3</b> <strong>计算高可用设计</strong></a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="高可用存储架构.html"><a href="高可用存储架构.html#关键设计点"><i class="fa fa-check"></i><b>7.3.1</b> <strong>关键设计点</strong></a></li>
+<li class="chapter" data-level="7.3.2" data-path="高可用存储架构.html"><a href="高可用存储架构.html#常见的计算高可用架构"><i class="fa fa-check"></i><b>7.3.2</b> <strong>常见的计算高可用架构</strong></a></li>
+<li class="chapter" data-level="7.3.3" data-path="高可用存储架构.html"><a href="高可用存储架构.html#总结-3"><i class="fa fa-check"></i><b>7.3.3</b> <strong>总结</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="可拓展架构.html"><a href="可拓展架构.html"><i class="fa fa-check"></i><b>8</b> 可拓展架构</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="可拓展架构.html"><a href="可拓展架构.html#软件系统的可扩展性核心理念与实现"><i class="fa fa-check"></i><b>8.1</b> <strong>软件系统的可扩展性：核心理念与实现</strong></a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="可拓展架构.html"><a href="可拓展架构.html#可扩展性的核心挑战"><i class="fa fa-check"></i><b>8.1.1</b> <strong>可扩展性的核心挑战</strong></a></li>
+<li class="chapter" data-level="8.1.2" data-path="可拓展架构.html"><a href="可拓展架构.html#可扩展性的基本思想拆分"><i class="fa fa-check"></i><b>8.1.2</b> <strong>可扩展性的基本思想：拆分</strong></a></li>
+<li class="chapter" data-level="8.1.3" data-path="可拓展架构.html"><a href="可拓展架构.html#三种常见的拆分思路"><i class="fa fa-check"></i><b>8.1.3</b> <strong>三种常见的拆分思路</strong></a></li>
+<li class="chapter" data-level="8.1.4" data-path="可拓展架构.html"><a href="可拓展架构.html#案例解析tcpip-协议栈"><i class="fa fa-check"></i><b>8.1.4</b> <strong>案例解析：TCP/IP 协议栈</strong></a></li>
+<li class="chapter" data-level="8.1.5" data-path="可拓展架构.html"><a href="可拓展架构.html#案例解析学生信息管理系统"><i class="fa fa-check"></i><b>8.1.5</b> <strong>案例解析：学生信息管理系统</strong></a></li>
+<li class="chapter" data-level="8.1.6" data-path="可拓展架构.html"><a href="可拓展架构.html#拆分方式的影响可扩展性"><i class="fa fa-check"></i><b>8.1.6</b> <strong>拆分方式的影响：可扩展性</strong></a></li>
+<li class="chapter" data-level="8.1.7" data-path="可拓展架构.html"><a href="可拓展架构.html#常见可扩展架构"><i class="fa fa-check"></i><b>8.1.7</b> <strong>常见可扩展架构</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构"><i class="fa fa-check"></i><b>8.2</b> <strong>分层架构</strong></a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的多样性"><i class="fa fa-check"></i><b>8.2.1</b> <strong>分层架构的多样性</strong></a></li>
+<li class="chapter" data-level="8.2.2" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的设计核心"><i class="fa fa-check"></i><b>8.2.2</b> <strong>分层架构的设计核心</strong></a></li>
+<li class="chapter" data-level="8.2.3" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的优势"><i class="fa fa-check"></i><b>8.2.3</b> <strong>分层架构的优势</strong></a></li>
+<li class="chapter" data-level="8.2.4" data-path="可拓展架构.html"><a href="可拓展架构.html#分层架构的局限性"><i class="fa fa-check"></i><b>8.2.4</b> <strong>分层架构的局限性</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="可拓展架构.html"><a href="可拓展架构.html#soa面向服务架构"><i class="fa fa-check"></i><b>8.3</b> <strong>SOA（面向服务架构）</strong></a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的核心概念"><i class="fa fa-check"></i><b>8.3.1</b> <strong>SOA 的核心概念</strong></a></li>
+<li class="chapter" data-level="8.3.2" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的优势"><i class="fa fa-check"></i><b>8.3.2</b> <strong>SOA 的优势</strong></a></li>
+<li class="chapter" data-level="8.3.3" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的挑战"><i class="fa fa-check"></i><b>8.3.3</b> <strong>SOA 的挑战</strong></a></li>
+<li class="chapter" data-level="8.3.4" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的典型架构"><i class="fa fa-check"></i><b>8.3.4</b> <strong>SOA 的典型架构</strong></a></li>
+<li class="chapter" data-level="8.3.5" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-的局限性"><i class="fa fa-check"></i><b>8.3.5</b> <strong>SOA 的局限性</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务炙手可热的架构设计理念"><i class="fa fa-check"></i><b>8.4</b> <strong>微服务：炙手可热的架构设计理念</strong></a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务与-soa-的关系"><i class="fa fa-check"></i><b>8.4.1</b> <strong>微服务与 SOA 的关系</strong></a></li>
+<li class="chapter" data-level="8.4.2" data-path="可拓展架构.html"><a href="可拓展架构.html#soa-与微服务的主要区别"><i class="fa fa-check"></i><b>8.4.2</b> <strong>SOA 与微服务的主要区别</strong></a></li>
+<li class="chapter" data-level="8.4.3" data-path="可拓展架构.html"><a href="可拓展架构.html#微服务的陷阱与挑战"><i class="fa fa-check"></i><b>8.4.3</b> <strong>微服务的陷阱与挑战</strong></a></li>
+<li class="chapter" data-level="8.4.4" data-path="可拓展架构.html"><a href="可拓展架构.html#总结-4"><i class="fa fa-check"></i><b>8.4.4</b> <strong>总结</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="架构模版.html"><a href="架构模版.html"><i class="fa fa-check"></i><b>9</b> 架构模版</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="架构模版.html"><a href="架构模版.html#存储技术架构"><i class="fa fa-check"></i><b>9.1</b> 存储技术架构</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="架构模版.html"><a href="架构模版.html#sql"><i class="fa fa-check"></i><b>9.1.1</b> SQL</a></li>
+<li class="chapter" data-level="9.1.2" data-path="架构模版.html"><a href="架构模版.html#nosql-1"><i class="fa fa-check"></i><b>9.1.2</b> NoSQL</a></li>
+<li class="chapter" data-level="9.1.3" data-path="架构模版.html"><a href="架构模版.html#小文件存储"><i class="fa fa-check"></i><b>9.1.3</b> 小文件存储</a></li>
+<li class="chapter" data-level="9.1.4" data-path="架构模版.html"><a href="架构模版.html#大文件存储"><i class="fa fa-check"></i><b>9.1.4</b> 大文件存储</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="架构模版.html"><a href="架构模版.html#开发层和服务层技术"><i class="fa fa-check"></i><b>9.2</b> 开发层和服务层技术</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="架构模版.html"><a href="架构模版.html#开发层技术"><i class="fa fa-check"></i><b>9.2.1</b> 开发层技术</a></li>
+<li class="chapter" data-level="9.2.2" data-path="架构模版.html"><a href="架构模版.html#开发框架"><i class="fa fa-check"></i><b>9.2.2</b> 开发框架</a></li>
+<li class="chapter" data-level="9.2.3" data-path="架构模版.html"><a href="架构模版.html#服务层技术"><i class="fa fa-check"></i><b>9.2.3</b> 服务层技术</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="架构模版.html"><a href="架构模版.html#网络层技术"><i class="fa fa-check"></i><b>9.3</b> 网络层技术</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="架构模版.html"><a href="架构模版.html#负载均衡"><i class="fa fa-check"></i><b>9.3.1</b> 负载均衡</a></li>
+<li class="chapter" data-level="9.3.2" data-path="架构模版.html"><a href="架构模版.html#cdn"><i class="fa fa-check"></i><b>9.3.2</b> CDN</a></li>
+<li class="chapter" data-level="9.3.3" data-path="架构模版.html"><a href="架构模版.html#多机房"><i class="fa fa-check"></i><b>9.3.3</b> 多机房</a></li>
+<li class="chapter" data-level="9.3.4" data-path="架构模版.html"><a href="架构模版.html#多中心"><i class="fa fa-check"></i><b>9.3.4</b> 多中心</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="架构模版.html"><a href="架构模版.html#用户层和业务层技术"><i class="fa fa-check"></i><b>9.4</b> 用户层和业务层技术</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="架构模版.html"><a href="架构模版.html#用户层技术"><i class="fa fa-check"></i><b>9.4.1</b> 用户层技术</a></li>
+<li class="chapter" data-level="9.4.2" data-path="架构模版.html"><a href="架构模版.html#业务层技术"><i class="fa fa-check"></i><b>9.4.2</b> 业务层技术</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="架构模版.html"><a href="架构模版.html#平台技术"><i class="fa fa-check"></i><b>9.5</b> 平台技术</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="架构模版.html"><a href="架构模版.html#运维平台"><i class="fa fa-check"></i><b>9.5.1</b> 运维平台</a></li>
+<li class="chapter" data-level="9.5.2" data-path="架构模版.html"><a href="架构模版.html#测试平台"><i class="fa fa-check"></i><b>9.5.2</b> 测试平台</a></li>
+<li class="chapter" data-level="9.5.3" data-path="架构模版.html"><a href="架构模版.html#数据平台"><i class="fa fa-check"></i><b>9.5.3</b> 数据平台</a></li>
+<li class="chapter" data-level="9.5.4" data-path="架构模版.html"><a href="架构模版.html#管理平台"><i class="fa fa-check"></i><b>9.5.4</b> 管理平台</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="架构设计模版.html"><a href="架构设计模版.html"><i class="fa fa-check"></i><b>10</b> 架构设计模版</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案模板优化版"><i class="fa fa-check"></i><b>10.1</b> <strong>备选方案模板优化版</strong></a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="架构设计模版.html"><a href="架构设计模版.html#需求介绍"><i class="fa fa-check"></i><b>10.1.1</b> ** 需求介绍**</a></li>
+<li class="chapter" data-level="10.1.2" data-path="架构设计模版.html"><a href="架构设计模版.html#需求分析"><i class="fa fa-check"></i><b>10.1.2</b> ** 需求分析**</a></li>
+<li class="chapter" data-level="10.1.3" data-path="架构设计模版.html"><a href="架构设计模版.html#复杂度分析"><i class="fa fa-check"></i><b>10.1.3</b> ** 复杂度分析**</a></li>
+<li class="chapter" data-level="10.1.4" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案"><i class="fa fa-check"></i><b>10.1.4</b> ** 备选方案**</a></li>
+<li class="chapter" data-level="10.1.5" data-path="架构设计模版.html"><a href="架构设计模版.html#备选方案评估"><i class="fa fa-check"></i><b>10.1.5</b> ** 备选方案评估**</a></li>
+<li class="chapter" data-level="10.1.6" data-path="架构设计模版.html"><a href="架构设计模版.html#最终架构设计"><i class="fa fa-check"></i><b>10.1.6</b> ** 最终架构设计**</a></li>
+<li class="chapter" data-level="10.1.7" data-path="架构设计模版.html"><a href="架构设计模版.html#核心设计与流程"><i class="fa fa-check"></i><b>10.1.7</b> <strong>核心设计与流程</strong></a></li>
+<li class="chapter" data-level="10.1.8" data-path="架构设计模版.html"><a href="架构设计模版.html#部署方案"><i class="fa fa-check"></i><b>10.1.8</b> <strong>部署方案</strong></a></li>
+<li class="chapter" data-level="10.1.9" data-path="架构设计模版.html"><a href="架构设计模版.html#演进规划"><i class="fa fa-check"></i><b>10.1.9</b> <strong>演进规划</strong></a></li>
+<li class="chapter" data-level="10.1.10" data-path="架构设计模版.html"><a href="架构设计模版.html#总结-5"><i class="fa fa-check"></i><b>10.1.10</b> <strong>总结</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="架构设计模版.html"><a href="架构设计模版.html#话架构图"><i class="fa fa-check"></i><b>10.2</b> 话架构图</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="架构设计模版.html"><a href="架构设计模版.html#视图软件架构的经典模型"><i class="fa fa-check"></i><b>10.2.1</b> <strong>4+1 视图：软件架构的经典模型</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/liamamilin" target="blank">这是一本讲架构的书籍</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">深入浅出架构</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="高性能架构" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> 高性能架构<a href="高性能架构.html#高性能架构" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>高性能数据库集群的第一种方式是“读写分离”，其本质是将访问压力分散到集群中的多个节点，但是没有分散存储压力；第二种方式是“分库分表”，既可以分散访问压力，又可以分散存储压力。先来看看“读写分离”，下一期我再介绍“分库分表”。</p>
+<div id="读写分离原理" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> 读写分离原理<a href="高性能架构.html#读写分离原理" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>读写分离的基本原理是将数据库读写操作分散到不同的节点上，下面是其基本架构图。</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/362d22168bf344687ec0c206aa115807.jpg" /></p>
+<p>读写分离的基本实现是：</p>
+<ul>
+<li>数据库服务器搭建主从集群，一主一从、一主多从都可以。</li>
+<li>数据库主机负责读写操作，从机只负责读操作。</li>
+<li>数据库主机通过复制将数据同步到从机，每台数据库服务器都存储了所有的业务数据。</li>
+<li>业务服务器将写操作发给数据库主机，将读操作发给数据库从机。</li>
+</ul>
+<p>需要注意的是，这里用的是“主从集群”，而不是“主备集群”。“从机”的“从”可以理解为“仆从”，仆从是要帮主人干活的，“从机”是需要提供读数据的功能的；而“备机”一般被认为仅仅提供备份功能，不提供访问功能。所以使用“主从”还是“主备”，是要看场景的，这两个词并不是完全等同的。</p>
+<p>读写分离的实现逻辑并不复杂，但有两个细节点将引入设计复杂度：主从复制延迟和分配机制。</p>
+<div id="复制延迟" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> 复制延迟<a href="高性能架构.html#复制延迟" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>以MySQL为例，主从复制延迟可能达到1秒，如果有大量数据同步，延迟1分钟也是有可能的。主从复制延迟会带来一个问题：如果业务服务器将数据写入到数据库主服务器后立刻（1秒内）进行读取，此时读操作访问的是从机，主机还没有将数据复制过来，到从机读取数据是读不到最新数据的，业务上就可能出现问题。例如，用户刚注册完后立刻登录，业务服务器会提示他“你还没有注册”，而用户明明刚才已经注册成功了。</p>
+<p>解决主从复制延迟有几种常见的方法：</p>
+<p>1.写操作后的读操作指定发给数据库主服务器</p>
+<p>例如，注册账号完成后，登录时读取账号的读操作也发给数据库主服务器。这种方式和业务强绑定，对业务的侵入和影响较大，如果哪个新来的程序员不知道这样写代码，就会导致一个bug。</p>
+<p>2.读从机失败后再读一次主机</p>
+<p>这就是通常所说的“二次读取”，二次读取和业务无绑定，只需要对底层数据库访问的API进行封装即可，实现代价较小，不足之处在于如果有很多二次读取，将大大增加主机的读操作压力。例如，黑客暴力破解账号，会导致大量的二次读取操作，主机可能顶不住读操作的压力从而崩溃。</p>
+<p>3.关键业务读写操作全部指向主机，非关键业务采用读写分离</p>
+<p>例如，对于一个用户管理系统来说，注册+登录的业务读写操作全部访问主机，用户的介绍、爱好、等级等业务，可以采用读写分离，因为即使用户改了自己的自我介绍，在查询时却看到了自我介绍还是旧的，业务影响与不能登录相比就小很多，还可以忍受。</p>
+</div>
+<div id="分配机制" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> 分配机制<a href="高性能架构.html#分配机制" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>将读写操作区分开来，然后访问不同的数据库服务器，一般有两种方式：程序代码封装和中间件封装。</p>
+<p>1.程序代码封装</p>
+<p>程序代码封装指在代码中抽象一个数据访问层（所以有的文章也称这种方式为“中间层封装”），实现读写操作分离和数据库服务器连接的管理。例如，基于Hibernate进行简单封装，就可以实现读写分离，基本架构是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/f8d538f9201e3ebee37dfdcd1922e9df.jpg?wh=2661*2178" /></p>
+<p>程序代码封装的方式具备几个特点：</p>
+<ul>
+<li>实现简单，而且可以根据业务做较多定制化的功能。</li>
+<li>每个编程语言都需要自己实现一次，无法通用，如果一个业务包含多个编程语言写的多个子系统，则重复开发的工作量比较大。</li>
+<li>故障情况下，如果主从发生切换，则可能需要所有系统都修改配置并重启。</li>
+</ul>
+<p>目前开源的实现方案中，淘宝的TDDL（Taobao Distributed Data Layer，外号:头都大了）是比较有名的。它是一个通用数据访问层，所有功能封装在jar包中提供给业务代码调用。其基本原理是一个基于集中式配置的 jdbc datasource实现，具有主备、读写分离、动态数据库配置等功能，基本架构是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/3b87f6ce297c4af219fa316d29eb5507.jpg" /></p>
+<p>2.中间件封装</p>
+<p>中间件封装指的是独立一套系统出来，实现读写操作分离和数据库服务器连接的管理。中间件对业务服务器提供SQL兼容的协议，业务服务器无须自己进行读写分离。对于业务服务器来说，访问中间件和访问数据库没有区别，事实上在业务服务器看来，中间件就是一个数据库服务器。其基本架构是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/2a2dba7f07581fd055d9cd5a3aa8388e.jpg?wh=2918*1905" /></p>
+<p>数据库中间件的方式具备的特点是：</p>
+<ul>
+<li>能够支持多种编程语言，因为数据库中间件对业务服务器提供的是标准SQL接口。</li>
+<li>数据库中间件要支持完整的SQL语法和数据库服务器的协议（例如，MySQL客户端和服务器的连接协议），实现比较复杂，细节特别多，很容易出现bug，需要较长的时间才能稳定。</li>
+<li>数据库中间件自己不执行真正的读写操作，但所有的数据库操作请求都要经过中间件，中间件的性能要求也很高。</li>
+<li>数据库主从切换对业务服务器无感知，数据库中间件可以探测数据库服务器的主从状态。例如，向某个测试表写入一条数据，成功的就是主机，失败的就是从机。</li>
+</ul>
+<p>由于数据库中间件的复杂度要比程序代码封装高出一个数量级，一般情况下建议采用程序语言封装的方式，或者使用成熟的开源数据库中间件。如果是大公司，可以投入人力去实现数据库中间件，因为这个系统一旦做好，接入的业务系统越多，节省的程序开发投入就越多，价值也越大。</p>
+<p>目前的开源数据库中间件方案中，MySQL官方先是提供了MySQL Proxy，但MySQL Proxy一直没有正式GA，现在MySQL官方推荐MySQL Router。MySQL Router的主要功能有读写分离、故障自动切换、负载均衡、连接池等，其基本架构如下：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/c9c7a3f3602a05d428484c571c1d4faf.jpg?wh=3311*2282" /></p>
+</div>
+</div>
+<div id="分库分表" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> 分库分表<a href="高性能架构.html#分库分表" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>读写分离分散了数据库读写操作的压力，但没有分散存储压力，当数据量达到千万甚至上亿条的时候，单台数据库服务器的存储能力会成为系统的瓶颈，主要体现在这几个方面：</p>
+<ul>
+<li>数据量太大，读写的性能会下降，即使有索引，索引也会变得很大，性能同样会下降。</li>
+<li>数据文件会变得很大，数据库备份和恢复需要耗费很长时间。</li>
+<li>数据文件越大，极端情况下丢失数据的风险越高（例如，机房火灾导致数据库主备机都发生故障）。</li>
+</ul>
+<p>基于上述原因，单个数据库服务器存储的数据量不能太大，需要控制在一定的范围内。为了满足业务数据存储的需求，就需要将存储分散到多台数据库服务器上。</p>
+<div id="业务分库" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> 业务分库<a href="高性能架构.html#业务分库" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>业务分库指的是按照业务模块将数据分散到不同的数据库服务器。例如，一个简单的电商网站，包括用户、商品、订单三个业务模块，我们可以将用户数据、商品数据、订单数据分开放到三台不同的数据库服务器上，而不是将所有数据都放在一台数据库服务器上。</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/71f41d46cc5c0405f4d4dc944b4350c9.jpg" /></p>
+<p>虽然业务分库能够分散存储和访问压力，但同时也带来了新的问题，接下来我进行详细分析。</p>
+<p>1.join操作问题</p>
+<p>业务分库后，原本在同一个数据库中的表分散到不同数据库中，导致无法使用SQL的join查询。</p>
+<p>例如：“查询购买了化妆品的用户中女性用户的列表”这个功能，虽然订单数据中有用户的ID信息，但是用户的性别数据在用户数据库中，如果在同一个库中，简单的join查询就能完成；但现在数据分散在两个不同的数据库中，无法做join查询，只能采取先从订单数据库中查询购买了化妆品的用户ID列表，然后再到用户数据库中查询这批用户ID中的女性用户列表，这样实现就比简单的join查询要复杂一些。</p>
+<p>2.事务问题</p>
+<p>原本在同一个数据库中不同的表可以在同一个事务中修改，业务分库后，表分散到不同的数据库中，无法通过事务统一修改。虽然数据库厂商提供了一些分布式事务的解决方案（例如，MySQL的XA），但性能实在太低，与高性能存储的目标是相违背的。</p>
+<p>例如，用户下订单的时候需要扣商品库存，如果订单数据和商品数据在同一个数据库中，我们可以使用事务来保证扣减商品库存和生成订单的操作要么都成功要么都失败，但分库后就无法使用数据库事务了，需要业务程序自己来模拟实现事务的功能。例如，先扣商品库存，扣成功后生成订单，如果因为订单数据库异常导致生成订单失败，业务程序又需要将商品库存加上；而如果因为业务程序自己异常导致生成订单失败，则商品库存就无法恢复了，需要人工通过日志等方式来手工修复库存异常。</p>
+<p>3.成本问题</p>
+<p>业务分库同时也带来了成本的代价，本来1台服务器搞定的事情，现在要3台，如果考虑备份，那就是2台变成了6台。</p>
+<p>基于上述原因，对于小公司初创业务，并不建议一开始就这样拆分，主要有几个原因：</p>
+<ul>
+<li>初创业务存在很大的不确定性，业务不一定能发展起来，业务开始的时候并没有真正的存储和访问压力，业务分库并不能为业务带来价值。</li>
+<li>业务分库后，表之间的join查询、数据库事务无法简单实现了。</li>
+<li>业务分库后，因为不同的数据要读写不同的数据库，代码中需要增加根据数据类型映射到不同数据库的逻辑，增加了工作量。而业务初创期间最重要的是快速实现、快速验证，业务分库会拖慢业务节奏。</li>
+</ul>
+</div>
+<div id="分表" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> 分表<a href="高性能架构.html#分表" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>将不同业务数据分散存储到不同的数据库服务器，能够支撑百万甚至千万用户规模的业务，但如果业务继续发展，同一业务的单表数据也会达到单台数据库服务器的处理瓶颈。例如，淘宝的几亿用户数据，如果全部存放在一台数据库服务器的一张表中，肯定是无法满足性能要求的，此时就需要对单表数据进行拆分。</p>
+<p>单表数据拆分有两种方式：垂直分表和水平分表。示意图如下：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/136bc2f01919edcb8271df6f7e71af40.jpg" /></p>
+<p>为了形象地理解垂直拆分和水平拆分的区别，可以想象你手里拿着一把刀，面对一个蛋糕切一刀：</p>
+<ul>
+<li>从上往下切就是垂直切分，因为刀的运行轨迹与蛋糕是垂直的，这样可以把蛋糕切成高度相等（面积可以相等也可以不相等）的两部分，对应到表的切分就是表记录数相同但包含不同的列。例如，示意图中的垂直切分，会把表切分为两个表，一个表包含ID、name、age、sex列，另外一个表包含ID、nickname、description列。</li>
+<li>从左往右切就是水平切分，因为刀的运行轨迹与蛋糕是平行的，这样可以把蛋糕切成面积相等（高度可以相等也可以不相等）的两部分，对应到表的切分就是表的列相同但包含不同的行数据。例如，示意图中的水平切分，会把表分为两个表，两个表都包含ID、name、age、sex、nickname、description列，但是一个表包含的是ID从1到999999的行数据，另一个表包含的是ID从1000000到9999999的行数据。
+上面这个示例比较简单，只考虑了一次切分的情况，实际架构设计过程中并不局限切分的次数，可以切两次，也可以切很多次，就像切蛋糕一样，可以切很多刀。</li>
+</ul>
+<p>单表进行切分后，是否要将切分后的多个表分散在不同的数据库服务器中，可以根据实际的切分效果来确定，并不强制要求单表切分为多表后一定要分散到不同数据库中。原因在于单表切分为多表后，新的表即使在同一个数据库服务器中，也可能带来可观的性能提升，如果性能能够满足业务要求，是可以不拆分到多台数据库服务器的，毕竟我们在上面业务分库的内容看到业务分库也会引入很多复杂性的问题；如果单表拆分为多表后，单台服务器依然无法满足性能要求，那就不得不再次进行业务分库的设计了。</p>
+<p>分表能够有效地分散存储压力和带来性能提升，但和分库一样，也会引入各种复杂性。</p>
+<p>1.垂直分表</p>
+<p>垂直分表适合将表中某些不常用且占了大量空间的列拆分出去。例如，前面示意图中的nickname和description字段，假设我们是一个婚恋网站，用户在筛选其他用户的时候，主要是用age和sex两个字段进行查询，而nickname和description两个字段主要用于展示，一般不会在业务查询中用到。description本身又比较长，因此我们可以将这两个字段独立到另外一张表中，这样在查询age和sex时，就能带来一定的性能提升。</p>
+<p>垂直分表引入的复杂性主要体现在表操作的数量要增加。例如，原来只要一次查询就可以获取name、age、sex、nickname、description，现在需要两次查询，一次查询获取name、age、sex，另外一次查询获取nickname、description。</p>
+<p>不过相比接下来要讲的水平分表，这个复杂性就是小巫见大巫了。</p>
+<p>2.水平分表</p>
+<p>水平分表适合表行数特别大的表，有的公司要求单表行数超过5000万就必须进行分表，这个数字可以作为参考，但并不是绝对标准，关键还是要看表的访问性能。对于一些比较复杂的表，可能超过1000万就要分表了；而对于一些简单的表，即使存储数据超过1亿行，也可以不分表。但不管怎样，当看到表的数据量达到千万级别时，作为架构师就要警觉起来，因为这很可能是架构的性能瓶颈或者隐患。</p>
+<p>水平分表相比垂直分表，会引入更多的复杂性，主要表现在下面几个方面：</p>
+<ul>
+<li>路由
+水平分表后，某条数据具体属于哪个切分后的子表，需要增加路由算法进行计算，这个算法会引入一定的复杂性。</li>
+</ul>
+<p>常见的路由算法有：</p>
+<p>范围路由：选取有序的数据列（例如，整形、时间戳等）作为路由的条件，不同分段分散到不同的数据库表中。以最常见的用户ID为例，路由算法可以按照1000000的范围大小进行分段，1 ~ 999999放到数据库1的表中，1000000 ~ 1999999放到数据库2的表中，以此类推。</p>
+<p>范围路由设计的复杂点主要体现在分段大小的选取上，分段太小会导致切分后子表数量过多，增加维护复杂度；分段太大可能会导致单表依然存在性能问题，一般建议分段大小在100万至2000万之间，具体需要根据业务选取合适的分段大小。</p>
+<p>范围路由的优点是可以随着数据的增加平滑地扩充新的表。例如，现在的用户是100万，如果增加到1000万，只需要增加新的表就可以了，原有的数据不需要动。</p>
+<p>范围路由的一个比较隐含的缺点是分布不均匀，假如按照1000万来进行分表，有可能某个分段实际存储的数据量只有1000条，而另外一个分段实际存储的数据量有900万条。</p>
+<p>Hash路由：选取某个列（或者某几个列组合也可以）的值进行Hash运算，然后根据Hash结果分散到不同的数据库表中。同样以用户ID为例，假如我们一开始就规划了10个数据库表，路由算法可以简单地用user_id % 10的值来表示数据所属的数据库表编号，ID为985的用户放到编号为5的子表中，ID为10086的用户放到编号为6的字表中。</p>
+<p>Hash路由设计的复杂点主要体现在初始表数量的选取上，表数量太多维护比较麻烦，表数量太少又可能导致单表性能存在问题。而用了Hash路由后，增加子表数量是非常麻烦的，所有数据都要重分布。</p>
+<p>Hash路由的优缺点和范围路由基本相反，Hash路由的优点是表分布比较均匀，缺点是扩充新的表很麻烦，所有数据都要重分布。</p>
+<p>配置路由：配置路由就是路由表，用一张独立的表来记录路由信息。同样以用户ID为例，我们新增一张user_router表，这个表包含user_id和table_id两列，根据user_id就可以查询对应的table_id。</p>
+<p>配置路由设计简单，使用起来非常灵活，尤其是在扩充表的时候，只需要迁移指定的数据，然后修改路由表就可以了。</p>
+<p>配置路由的缺点就是必须多查询一次，会影响整体性能；而且路由表本身如果太大（例如，几亿条数据），性能同样可能成为瓶颈，如果我们再次将路由表分库分表，则又面临一个死循环式的路由算法选择问题。</p>
+<ul>
+<li><p>join操作
+水平分表后，数据分散在多个表中，如果需要与其他表进行join查询，需要在业务代码或者数据库中间件中进行多次join查询，然后将结果合并。</p></li>
+<li><p>count()操作
+水平分表后，虽然物理上数据分散到多个表中，但某些业务逻辑上还是会将这些表当作一个表来处理。例如，获取记录总数用于分页或者展示，水平分表前用一个count()就能完成的操作，在分表后就没那么简单了。常见的处理方式有下面两种：</p></li>
+</ul>
+<p>count()相加：具体做法是在业务代码或者数据库中间件中对每个表进行count()操作，然后将结果相加。这种方式实现简单，缺点就是性能比较低。例如，水平分表后切分为20张表，则要进行20次count(*)操作，如果串行的话，可能需要几秒钟才能得到结果。</p>
+<p>记录数表：具体做法是新建一张表，假如表名为“记录数表”，包含table_name、row_count两个字段，每次插入或者删除子表数据成功后，都更新“记录数表”。</p>
+<p>这种方式获取表记录数的性能要大大优于count()相加的方式，因为只需要一次简单查询就可以获取数据。缺点是复杂度增加不少，对子表的操作要同步操作“记录数表”，如果有一个业务逻辑遗漏了，数据就会不一致；且针对“记录数表”的操作和针对子表的操作无法放在同一事务中进行处理，异常的情况下会出现操作子表成功了而操作记录数表失败，同样会导致数据不一致。</p>
+<p>此外，记录数表的方式也增加了数据库的写压力，因为每次针对子表的insert和delete操作都要update记录数表，所以对于一些不要求记录数实时保持精确的业务，也可以通过后台定时更新记录数表。定时更新实际上就是“count()相加”和“记录数表”的结合，即定时通过count()相加计算表的记录数，然后更新记录数表中的数据。</p>
+<ul>
+<li>order by操作
+水平分表后，数据分散到多个子表中，排序操作无法在数据库中完成，只能由业务代码或者数据库中间件分别查询每个子表中的数据，然后汇总进行排序。</li>
+</ul>
+</div>
+</div>
+<div id="nosql" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> NoSQL<a href="高性能架构.html#nosql" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>关系数据库经过几十年的发展后已经非常成熟，强大的SQL功能和ACID的属性，使得关系数据库广泛应用于各式各样的系统中，但这并不意味着关系数据库是完美的，关系数据库存在如下缺点。</p>
+<ul>
+<li>关系数据库存储的是行记录，无法存储数据结构</li>
+<li>关系数据库的schema扩展很不方便: 关系数据库的表结构schema是强约束，操作不存在的列会报错，业务变化时扩充列也比较麻烦，需要执行DDL（data definition language，如CREATE、ALTER、DROP等）语句修改，而且修改时可能会长时间锁表（例如，MySQL可能将表锁住1个小时）。</li>
+<li>关系数据库在大数据场景下I/O较高.如果对一些大量数据的表进行统计之类的运算，关系数据库的I/O会很高，因为即使只针对其中某一列进行运算，关系数据库也会将整行数据从存储设备读入内存。</li>
+<li>关系数据库的全文搜索功能比较弱.关系数据库的全文搜索只能使用like进行整表扫描匹配，性能非常低，在互联网这种搜索复杂的场景下无法满足业务要求。</li>
+</ul>
+<p>针对上述问题，分别诞生了不同的NoSQL解决方案，这些方案与关系数据库相比，在某些应用场景下表现更好。但世上没有免费的午餐，NoSQL方案带来的优势，本质上是牺牲ACID中的某个或者某几个特性，因此我们不能盲目地迷信NoSQL是银弹，而应该将NoSQL作为SQL的一个有力补充.</p>
+<p>常见的NoSQL方案分为4类。</p>
+<ul>
+<li>K-V存储：解决关系数据库无法存储数据结构的问题，以Redis为代表。</li>
+<li>文档数据库：解决关系数据库强schema约束的问题，以MongoDB为代表。</li>
+<li>列式数据库：解决关系数据库大数据场景下的I/O问题，以HBase为代表。</li>
+<li>全文搜索引擎：解决关系数据库的全文搜索性能问题，以Elasticsearch为代表。</li>
+</ul>
+<div id="k-v存储" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> K-V存储<a href="高性能架构.html#k-v存储" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>K-V存储的全称是Key-Value存储，其中Key是数据的标识，和关系数据库中的主键含义一样，Value就是具体的数据。</p>
+<p>Redis是K-V存储的典型代表，它是一款开源（基于BSD许可）的高性能K-V缓存和存储系统。Redis的Value是具体的数据结构，包括string、hash、list、set、sorted set、bitmap和hyperloglog，所以常常被称为数据结构服务器。</p>
+<ul>
+<li>LPOP key从队列的左边出队一个元素。</li>
+<li>LINDEX key index获取一个元素，通过其索引列表。</li>
+<li>LLEN key获得队列（List）的长度。</li>
+<li>RPOP key从队列的右边出队一个元素。</li>
+</ul>
+<p>以上这些功能，如果用关系数据库来实现，就会变得很复杂。</p>
+</div>
+<div id="文档数据库" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> 文档数据库<a href="高性能架构.html#文档数据库" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>了解决关系数据库schema带来的问题，文档数据库应运而生。文档数据库最大的特点就是no-schema，可以存储和读取任意的数据。目前绝大部分文档数据库存储的数据格式是JSON（或者BSON），因为JSON数据是自描述的，无须在使用前定义字段，读取一个JSON中不存在的字段也不会导致SQL那样的语法错误。</p>
+<p>1.新增字段简单</p>
+<p>业务上增加新的字段，无须再像关系数据库一样要先执行DDL语句修改表结构，程序代码直接读写即可。</p>
+<p>2.历史数据不会出错</p>
+<p>对于历史数据，即使没有新增的字段，也不会导致错误，只会返回空值，此时代码进行兼容处理即可。</p>
+<p>3.可以很容易存储复杂数据</p>
+<p>JSON是一种强大的描述语言，能够描述复杂的数据结构。例如，我们设计一个用户管理系统，用户的信息有ID、姓名、性别、爱好、邮箱、地址、学历信息。其中爱好是列表（因为可以有多个爱好）；地址是一个结构，包括省市区楼盘地址；学历包括学校、专业、入学毕业年份信息等。如果我们用关系数据库来存储，需要设计多张表，包括基本信息（列：ID、姓名、性别、邮箱）、爱好（列：ID、爱好）、地址（列：省、市、区、详细地址）、学历（列：入学时间、毕业时间、学校名称、专业），而使用文档数据库，一个JSON就可以全部描述。</p>
+<p>文档数据库的这个特点，特别适合电商和游戏这类的业务场景。以电商为例，不同商品的属性差异很大。例如，冰箱的属性和笔记本电脑的属性差异非常大，如下图所示。</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/81c57d42e269521ba4b671cac345066e.jpg" /></p>
+<p>即使是同类商品也有不同的属性。例如，LCD和LED显示器，两者有不同的参数指标。这种业务场景如果使用关系数据库来存储数据，就会很麻烦，而使用文档数据库，会简单、方便许多，扩展新的属性也更加容易。</p>
+<p>文档数据库no-schema的特性带来的这些优势也是有代价的，最主要的代价就是不支持事务。例如，使用MongoDB来存储商品库存，系统创建订单的时候首先需要减扣库存，然后再创建订单。这是一个事务操作，用关系数据库来实现就很简单，但如果用MongoDB来实现，就无法做到事务性。异常情况下可能出现库存被扣减了，但订单没有创建的情况。因此某些对事务要求严格的业务场景是不能使用文档数据库的。</p>
+<p>文档数据库另外一个缺点就是无法实现关系数据库的join操作。例如，我们有一个用户信息表和一个订单表，订单表中有买家用户id。如果要查询“购买了苹果笔记本用户中的女性用户”，用关系数据库来实现，一个简单的join操作就搞定了；而用文档数据库是无法进行join查询的，需要查两次：一次查询订单表中购买了苹果笔记本的用户，然后再查询这些用户哪些是女性用户。</p>
+</div>
+<div id="列式数据库" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> 列式数据库<a href="高性能架构.html#列式数据库" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>关系数据库按照行式来存储数据，主要有以下几个优势：</p>
+<p>业务同时读取多个列时效率高，因为这些列都是按行存储在一起的，一次磁盘操作就能够把一行数据中的各个列都读取到内存中。
+能够一次性完成对一行中的多个列的写操作，保证了针对行数据写操作的原子性和一致性；否则如果采用列存储，可能会出现某次写操作，有的列成功了，有的列失败了，导致数据不一致。
+我们可以看到，行式存储的优势是在特定的业务场景下才能体现，如果不存在这样的业务场景，那么行式存储的优势也将不复存在，甚至成为劣势，典型的场景就是海量数据进行统计。例如，计算某个城市体重超重的人员数据，实际上只需要读取每个人的体重这一列并进行统计即可，而行式存储即使最终只使用一列，也会将所有行数据都读取出来。如果单行用户信息有1KB，其中体重只有4个字节，行式存储还是会将整行1KB数据全部读取到内存中，这是明显的浪费。而如果采用列式存储，每个用户只需要读取4字节的体重数据即可，I/O将大大减少。</p>
+<p>除了节省I/O，列式存储还具备更高的存储压缩比，能够节省更多的存储空间。普通的行式数据库一般压缩率在3:1到5:1左右，而列式数据库的压缩率一般在8:1到30:1左右，因为单个列的数据相似度相比行来说更高，能够达到更高的压缩率。</p>
+<p>同样，如果场景发生变化，列式存储的优势又会变成劣势。典型的场景是需要频繁地更新多个列。因为列式存储将不同列存储在磁盘上不连续的空间，导致更新多个列时磁盘是随机写操作；而行式存储时同一行多个列都存储在连续的空间，一次磁盘写操作就可以完成，列式存储的随机写效率要远远低于行式存储的写效率。此外，列式存储高压缩率在更新场景下也会成为劣势，因为更新时需要将存储数据解压后更新，然后再压缩，最后写入磁盘。</p>
+</div>
+<div id="全文搜索引擎" class="section level3 hasAnchor" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> 全文搜索引擎<a href="高性能架构.html#全文搜索引擎" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>传统的关系型数据库通过索引来达到快速查询的目的，但是在全文搜索的业务场景下，索引也无能为力，主要体现在：</p>
+<p>全文搜索的条件可以随意排列组合，如果通过索引来满足，则索引的数量会非常多。
+全文搜索的模糊匹配方式，索引无法满足，只能用like查询，而like查询是整表扫描，效率非常低。
+我举一个具体的例子来看看关系型数据库为何无法满足全文搜索的要求。假设我们做一个婚恋网站，其主要目的是帮助程序员找朋友，但模式与传统婚恋网站不同，是“程序员发布自己的信息，用户来搜索程序员”。程序员的信息表设计如下：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/d93121cecabc2182edb68bebfc467f39.jpg" /></p>
+<p>1.全文搜索基本原理</p>
+<p>全文搜索引擎的技术原理被称为“倒排索引”（Inverted index），也常被称为反向索引、置入档案或反向档案，是一种索引方法，其基本原理是建立单词到文档的索引。之所以被称为“倒排”索引，是和“正排“索引相对的，“正排索引”的基本原理是建立文档到单词的索引。我们通过一个简单的样例来说明这两种索引的差异。</p>
+<p>假设我们有一个技术文章的网站，里面收集了各种技术文章，用户可以在网站浏览或者搜索文章。</p>
+<p>正排索引示例：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/5fe73007957ecfcca009fd81f673df87.jpg" /></p>
+<p>正排索引适用于根据文档名称来查询文档内容。例如，用户在网站上单击了“面向对象葵花宝典是什么”，网站根据文章标题查询文章的内容展示给用户。</p>
+<p>倒排索引示例：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/ea5dc300ec9c556dc13790b69f4d60f6.jpg" /></p>
+<p>倒排索引适用于根据关键词来查询文档内容。例如，用户只是想看“设计”相关的文章，网站需要将文章内容中包含“设计”一词的文章都搜索出来展示给用户。</p>
+<p>2.全文搜索的使用方式</p>
+<p>全文搜索引擎的索引对象是单词和文档，而关系数据库的索引对象是键和行，两者的术语差异很大，不能简单地等同起来。因此，为了让全文搜索引擎支持关系型数据的全文搜索，需要做一些转换操作，即将关系型数据转换为文档数据。</p>
+<p>目前常用的转换方式是将关系型数据按照对象的形式转换为JSON文档，然后将JSON文档输入全文搜索引擎进行索引。</p>
+</div>
+</div>
+<div id="缓存" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> 缓存<a href="高性能架构.html#缓存" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>虽然我们可以通过各种手段来提升存储系统的性能，但在某些复杂的业务场景下，单纯依靠存储系统的性能提升不够的，典型的场景有：</p>
+<ul>
+<li>需要经过复杂运算后得出的数据，存储系统无能为力</li>
+</ul>
+<p>例如，一个论坛需要在首页展示当前有多少用户同时在线，如果使用MySQL来存储当前用户状态，则每次获取这个总数都要“count(*)”大量数据，这样的操作无论怎么优化MySQL，性能都不会太高。如果要实时展示用户同时在线数，则MySQL性能无法支撑。</p>
+<ul>
+<li>读多写少的数据，存储系统有心无力</li>
+</ul>
+<p>绝大部分在线业务都是读多写少。例如，微博、淘宝、微信这类互联网业务，读业务占了整体业务量的90%以上。以微博为例：一个明星发一条微博，可能几千万人来浏览。如果使用MySQL来存储微博，用户写微博只有一条insert语句，但每个用户浏览时都要select一次，即使有索引，几千万条select语句对MySQL数据库的压力也会非常大。</p>
+<p>缓存就是为了弥补存储系统在这些复杂业务场景下的不足，其基本原理是将可能重复使用的数据放到内存中，一次生成、多次使用，避免每次使用都去访问存储系统。</p>
+<p>缓存能够带来性能的大幅提升，以Memcache为例，单台Memcache服务器简单的key-value查询能够达到TPS 50000以上，其基本的架构是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/c70fdcaab49fe730380d2207017c4215.jpg" /></p>
+<p>缓存虽然能够大大减轻存储系统的压力，但同时也给架构引入了更多复杂性。架构设计时如果没有针对缓存的复杂性进行处理，某些场景下甚至会导致整个系统崩溃。今天，我来逐一分析缓存的架构设计要点。</p>
+<div id="缓存穿透" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> 缓存穿透<a href="高性能架构.html#缓存穿透" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>缓存穿透是指缓存没有发挥作用，业务系统虽然去缓存查询数据，但缓存中没有数据，业务系统需要再次去存储系统查询数据。通常情况下有两种情况：</p>
+<p>1.存储数据不存在</p>
+<p>第一种情况是被访问的数据确实不存在。一般情况下，如果存储系统中没有某个数据，则不会在缓存中存储相应的数据，这样就导致用户查询的时候，在缓存中找不到对应的数据，每次都要去存储系统中再查询一遍，然后返回数据不存在。缓存在这个场景中并没有起到分担存储系统访问压力的作用。</p>
+<p>通常情况下，业务上读取不存在的数据的请求量并不会太大，但如果出现一些异常情况，例如被黑客攻击，故意大量访问某些读取不存在数据的业务，有可能会将存储系统拖垮。</p>
+<p>这种情况的解决办法比较简单，如果查询存储系统的数据没有找到，则直接设置一个默认值（可以是空值，也可以是具体的值）存到缓存中，这样第二次读取缓存时就会获取到默认值，而不会继续访问存储系统。</p>
+<p>2.缓存数据生成耗费大量时间或者资源</p>
+<p>第二种情况是存储系统中存在数据，但生成缓存数据需要耗费较长时间或者耗费大量资源。如果刚好在业务访问的时候缓存失效了，那么也会出现缓存没有发挥作用，访问压力全部集中在存储系统上的情况。</p>
+<p>典型的就是电商的商品分页，假设我们在某个电商平台上选择“手机”这个类别查看，由于数据巨大，不能把所有数据都缓存起来，只能按照分页来进行缓存，由于难以预测用户到底会访问哪些分页，因此业务上最简单的就是每次点击分页的时候按分页计算和生成缓存。通常情况下这样实现是基本满足要求的，但是如果被竞争对手用爬虫来遍历的时候，系统性能就可能出现问题。</p>
+<p>具体的场景有：</p>
+<ul>
+<li>分页缓存的有效期设置为1天，因为设置太长时间的话，缓存不能反应真实的数据。</li>
+<li>通常情况下，用户不会从第1页到最后1页全部看完，一般用户访问集中在前10页，因此第10页以后的缓存过期失效的可能性很大。</li>
+<li>竞争对手每周来爬取数据，爬虫会将所有分类的所有数据全部遍历，从第1页到最后1页全部都会读取，此时很多分页缓存可能都失效了。</li>
+<li>由于很多分页都没有缓存数据，从数据库中生成缓存数据又非常耗费性能（order by limit操作），因此爬虫会将整个数据库全部拖慢。</li>
+</ul>
+<p>这种情况并没有太好的解决方案，因为爬虫会遍历所有的数据，而且什么时候来爬取也是不确定的，可能是每天都来，也可能是每周，也可能是一个月来一次，我们也不可能为了应对爬虫而将所有数据永久缓存。通常的应对方案要么就是识别爬虫然后禁止访问，但这可能会影响SEO和推广；要么就是做好监控，发现问题后及时处理，因为爬虫不是攻击，不会进行暴力破坏，对系统的影响是逐步的，监控发现问题后有时间进行处理。</p>
+</div>
+<div id="缓存雪崩" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> 缓存雪崩<a href="高性能架构.html#缓存雪崩" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>缓存雪崩是指当缓存失效（过期）后引起系统性能急剧下降的情况。当缓存过期被清除后，业务系统需要重新生成缓存，因此需要再次访问存储系统，再次进行运算，这个处理步骤耗时几十毫秒甚至上百毫秒。而对于一个高并发的业务系统来说，几百毫秒内可能会接到几百上千个请求。由于旧的缓存已经被清除，新的缓存还未生成，并且处理这些请求的线程都不知道另外有一个线程正在生成缓存，因此所有的请求都会去重新生成缓存，都会去访问存储系统，从而对存储系统造成巨大的性能压力。这些压力又会拖慢整个系统，严重的会造成数据库宕机，从而形成一系列连锁反应，造成整个系统崩溃。</p>
+<p>缓存雪崩的常见解决方法有两种：更新锁机制和后台更新机制。</p>
+<p>1.更新锁</p>
+<p>对缓存更新操作进行加锁保护，保证只有一个线程能够进行缓存更新，未能获取更新锁的线程要么等待锁释放后重新读取缓存，要么就返回空值或者默认值。</p>
+<p>对于采用分布式集群的业务系统，由于存在几十上百台服务器，即使单台服务器只有一个线程更新缓存，但几十上百台服务器一起算下来也会有几十上百个线程同时来更新缓存，同样存在雪崩的问题。因此分布式集群的业务系统要实现更新锁机制，需要用到分布式锁，如ZooKeeper。</p>
+<p>2.后台更新</p>
+<p>由后台线程来更新缓存，而不是由业务线程来更新缓存，缓存本身的有效期设置为永久，后台线程定时更新缓存。</p>
+<p>后台定时机制需要考虑一种特殊的场景，当缓存系统内存不够时，会“踢掉”一些缓存数据，从缓存被“踢掉”到下一次定时更新缓存的这段时间内，业务线程读取缓存返回空值，而业务线程本身又不会去更新缓存，因此业务上看到的现象就是数据丢了。解决的方式有两种：</p>
+<ul>
+<li>后台线程除了定时更新缓存，还要频繁地去读取缓存（例如，1秒或者100毫秒读取一次），如果发现缓存被“踢了”就立刻更新缓存，这种方式实现简单，但读取时间间隔不能设置太长，因为如果缓存被踢了，缓存读取间隔时间又太长，这段时间内业务访问都拿不到真正的数据而是一个空的缓存值，用户体验一般。</li>
+<li>业务线程发现缓存失效后，通过消息队列发送一条消息通知后台线程更新缓存。可能会出现多个业务线程都发送了缓存更新消息，但其实对后台线程没有影响，后台线程收到消息后更新缓存前可以判断缓存是否存在，存在就不执行更新操作。这种方式实现依赖消息队列，复杂度会高一些，但缓存更新更及时，用户体验更好。
+后台更新既适应单机多线程的场景，也适合分布式集群的场景，相比更新锁机制要简单一些。</li>
+</ul>
+<p>后台更新机制还适合业务刚上线的时候进行缓存预热。缓存预热指系统上线后，将相关的缓存数据直接加载到缓存系统，而不是等待用户访问才来触发缓存加载。</p>
+</div>
+<div id="缓存热点" class="section level3 hasAnchor" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> 缓存热点<a href="高性能架构.html#缓存热点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>虽然缓存系统本身的性能比较高，但对于一些特别热点的数据，如果大部分甚至所有的业务请求都命中同一份缓存数据，则这份数据所在的缓存服务器的压力也很大。例如，某明星微博发布“我们”来宣告恋爱了，短时间内上千万的用户都会来围观。</p>
+<p>缓存热点的解决方案就是复制多份缓存副本，将请求分散到多个缓存服务器上，减轻缓存热点导致的单台缓存服务器压力。以微博为例，对于粉丝数超过100万的明星，每条微博都可以生成100份缓存，缓存的数据是一样的，通过在缓存的key里面加上编号进行区分，每次读缓存时都随机读取其中某份缓存。</p>
+<p>缓存副本设计有一个细节需要注意，就是不同的缓存副本不要设置统一的过期时间，否则就会出现所有缓存副本同时生成同时失效的情况，从而引发缓存雪崩效应。正确的做法是设定一个过期时间范围，不同的缓存副本的过期时间是指定范围内的随机值。</p>
+</div>
+</div>
+<div id="ppc-和tpc" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> PPC 和TPC<a href="高性能架构.html#ppc-和tpc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>站在架构师的角度，当然需要特别关注高性能架构的设计。高性能架构设计主要集中在两方面：</p>
+<ul>
+<li>尽量提升单服务器的性能，将单服务器的性能发挥到极致。</li>
+<li>如果单服务器无法支撑性能，设计服务器集群方案。</li>
+</ul>
+<p>除了以上两点，最终系统能否实现高性能，还和具体的实现及编码相关。但架构设计是高性能的基础，如果架构设计没有做到高性能，则后面的具体实现和编码能提升的空间是有限的。形象地说，架构设计决定了系统性能的上限，实现细节决定了系统性能的下限。</p>
+<p>单服务器高性能的关键之一就是服务器采取的并发模型，并发模型有如下两个关键设计点：</p>
+<ul>
+<li>服务器如何管理连接。</li>
+<li>服务器如何处理请求。</li>
+</ul>
+<p>以上两个设计点最终都和操作系统的I/O模型及进程模型相关。</p>
+<ul>
+<li>I/O模型：阻塞、非阻塞、同步、异步。</li>
+<li>进程模型：单进程、多进程、多线程。</li>
+</ul>
+<div id="ppc" class="section level3 hasAnchor" number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> PPC<a href="高性能架构.html#ppc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>PPC是Process Per Connection的缩写，其含义是指每次有新的连接就新建一个进程去专门处理这个连接的请求，这是传统的UNIX网络服务器所采用的模型。基本的流程图是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/53b17d63a31c6b551d3a039a2568daba.jpg" /></p>
+<ul>
+<li>父进程接受连接（图中accept）。</li>
+<li>父进程“fork”子进程（图中fork）。</li>
+<li>子进程处理连接的读写请求（图中子进程read、业务处理、write）。</li>
+<li>子进程关闭连接（图中子进程中的close）。</li>
+</ul>
+</div>
+<div id="prefork" class="section level3 hasAnchor" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> prefork<a href="高性能架构.html#prefork" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>PPC模式中，当连接进来时才fork新进程来处理连接请求，由于fork进程代价高，用户访问时可能感觉比较慢，prefork模式的出现就是为了解决这个问题。</p>
+<p>顾名思义，prefork就是提前创建进程（pre-fork）。系统在启动的时候就预先创建好进程，然后才开始接受用户的请求，当有新的连接进来的时候，就可以省去fork进程的操作，让用户访问更快、体验更好。prefork的基本示意图是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/3c931b04d3372ebcebe4f2c2cf59d42f.jpg?wh=3219*2430" /></p>
+<p>prefork的实现关键就是多个子进程都accept同一个socket，当有新的连接进入时，操作系统保证只有一个进程能最后accept成功。但这里也存在一个小小的问题：“惊群”现象，就是指虽然只有一个子进程能accept成功，但所有阻塞在accept上的子进程都会被唤醒，这样就导致了不必要的进程调度和上下文切换了。幸运的是，操作系统可以解决这个问题，例如Linux 2.6版本后内核已经解决了accept惊群问题。</p>
+<p>prefork模式和PPC一样，还是存在父子进程通信复杂、支持的并发连接数量有限的问题，因此目前实际应用也不多。Apache服务器提供了MPM prefork模式，推荐在需要可靠性或者与旧软件兼容的站点时采用这种模式，默认情况下最大支持256个并发连接。</p>
+</div>
+<div id="tpc" class="section level3 hasAnchor" number="6.5.3">
+<h3><span class="header-section-number">6.5.3</span> TPC<a href="高性能架构.html#tpc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>TPC是Thread Per Connection的缩写，其含义是指每次有新的连接就新建一个线程去专门处理这个连接的请求。与进程相比，线程更轻量级，创建线程的消耗比进程要少得多；同时多线程是共享进程内存空间的，线程通信相比进程通信更简单。因此，TPC实际上是解决或者弱化了PPC fork代价高的问题和父子进程通信复杂的问题。</p>
+<p>TPC的基本流程是：</p>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/25b3910c8c5fb0055e184c5c186eece7.jpg?wh=4464*3285" /></p>
+<ul>
+<li>父进程接受连接（图中accept）。</li>
+<li>父进程创建子线程（图中pthread）。</li>
+<li>子线程处理连接的读写请求（图中子线程read、业务处理、write）。</li>
+<li>子线程关闭连接（图中子线程中的close）。</li>
+</ul>
+<p>和PPC相比，主进程不用“close”连接了。原因是在于子线程是共享主进程的进程空间的，连接的文件描述符并没有被复制，因此只需要一次close即可。</p>
+<p>TPC虽然解决了fork代价高和进程通信复杂的问题，但是也引入了新的问题，具体表现在：</p>
+<ul>
+<li>创建线程虽然比创建进程代价低，但并不是没有代价，高并发时（例如每秒上万连接）还是有性能问题。</li>
+<li>无须进程间通信，但是线程间的互斥和共享又引入了复杂度，可能一不小心就导致了死锁问题。</li>
+<li>多线程会出现互相影响的情况，某个线程出现异常时，可能导致整个进程退出（例如内存越界）。</li>
+</ul>
+<p>除了引入了新的问题，TPC还是存在CPU线程调度和切换代价的问题。因此，TPC方案本质上和PPC方案基本类似，在并发几百连接的场景下，反而更多地是采用PPC的方案，因为PPC方案不会有死锁的风险，也不会多进程互相影响，稳定性更高。</p>
+</div>
+<div id="prethread" class="section level3 hasAnchor" number="6.5.4">
+<h3><span class="header-section-number">6.5.4</span> prethread<a href="高性能架构.html#prethread" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>TPC模式中，当连接进来时才创建新的线程来处理连接请求，虽然创建线程比创建进程要更加轻量级，但还是有一定的代价，而prethread模式就是为了解决这个问题。</p>
+<p>和prefork类似，prethread模式会预先创建线程，然后才开始接受用户的请求，当有新的连接进来的时候，就可以省去创建线程的操作，让用户感觉更快、体验更好。</p>
+<p>由于多线程之间数据共享和通信比较方便，因此实际上prethread的实现方式相比prefork要灵活一些，常见的实现方式有下面几种：</p>
+<ul>
+<li>主进程accept，然后将连接交给某个线程处理。</li>
+<li>子线程都尝试去accept，最终只有一个线程accept成功，方案的基本示意图如下：</li>
+</ul>
+<p><img src="https://lianglianglee.com/%e4%b8%93%e6%a0%8f/%e4%bb%8e%200%20%e5%bc%80%e5%a7%8b%e5%ad%a6%e6%9e%b6%e6%9e%84/assets/115308f686fe0bb1c93ec4b1728eda4d.jpg?wh=4527*3150" /></p>
+<p>Apache服务器的MPM worker模式本质上就是一种prethread方案，但稍微做了改进。Apache服务器会首先创建多个进程，每个进程里面再创建多个线程，这样做主要是为了考虑稳定性，即：即使某个子进程里面的某个线程异常导致整个子进程退出，还会有其他子进程继续提供服务，不会导致整个服务器全部挂掉。</p>
+</div>
+</div>
+<div id="高效资源利用与事件处理" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> 高效资源利用与事件处理<a href="高性能架构.html#高效资源利用与事件处理" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="为什么阻塞处理低效" class="section level3 hasAnchor" number="6.6.1">
+<h3><span class="header-section-number">6.6.1</span> 为什么阻塞处理低效？<a href="高性能架构.html#为什么阻塞处理低效" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>传统的阻塞处理流程为 <code>read -&gt; 业务处理 -&gt; write</code>。当一个进程或线程被阻塞在 <code>read</code> 操作上时，它无法处理其他连接的请求。如果一个线程需要负责多个连接，这种阻塞式处理显然行不通，因为一个连接的等待会阻塞其他连接的服务。</p>
+<hr />
+</div>
+<div id="非阻塞轮询优点与局限" class="section level3 hasAnchor" number="6.6.2">
+<h3><span class="header-section-number">6.6.2</span> 非阻塞轮询：优点与局限<a href="高性能架构.html#非阻塞轮询优点与局限" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>最简单的解决方法是将 <code>read</code> 改为###非阻塞###，即线程不停地轮询所有连接，检查是否有数据可读或可写。然而，这种方式有明显的缺陷：</p>
+<ol style="list-style-type: decimal">
+<li>###高CPU消耗###：轮询会占用大量CPU资源，尤其在没有可用数据时。</li>
+<li>###低效率###：当连接数量达到成千上万时，轮询逐个检查效率极低。</li>
+</ol>
+<hr />
+</div>
+<div id="io多路复用解决方案" class="section level3 hasAnchor" number="6.6.3">
+<h3><span class="header-section-number">6.6.3</span> ###I/O多路复用：解决方案<a href="高性能架构.html#io多路复用解决方案" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>###I/O多路复用###技术通过统一管理所有连接事件，使线程只在有事件时处理数据，从而避免了轮询开销。其核心实现包括两个关键点：</p>
+<ol style="list-style-type: decimal">
+<li>###共享阻塞对象###：多个连接共用一个阻塞对象（如 <code>select</code>、<code>epoll</code>、<code>kqueue</code>），线程只需等待这个对象，而无需轮询所有连接。</li>
+<li>###事件通知机制###：当连接上有新事件（如可读、可写）时，操作系统通知线程，从阻塞状态中返回并开始处理。</li>
+</ol>
+<p>通过结合 I/O多路复用与线程池，可以极大提升性能。这种机制被称为 ###Reactor 模式###。</p>
+<hr />
+</div>
+<div id="reactor-模式" class="section level3 hasAnchor" number="6.6.4">
+<h3><span class="header-section-number">6.6.4</span> ###Reactor 模式<a href="高性能架构.html#reactor-模式" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>###Reactor 模式###通过事件分发和资源复用实现高效网络处理，它的核心在于“###事件驱动###”。Reactor 模式有以下几个关键组成：</p>
+<ul>
+<li>###Reactor###：负责监听事件并分发给对应的处理器。</li>
+<li>###Handler###：负责具体事件的处理，例如 <code>read -&gt; 业务逻辑 -&gt; write</code>。</li>
+<li>###资源池###：由线程或进程构成，执行具体的业务逻辑。</li>
+</ul>
+<p>Reactor 的工作原理可以简单理解为：</p>
+<ol style="list-style-type: decimal">
+<li>###监听事件###：Reactor 统一监听所有连接事件（如新连接、可读、可写）。</li>
+<li>###分发事件###：根据事件类型分发给对应的 <code>Handler</code>。</li>
+<li>###执行处理###：<code>Handler</code> 完成业务逻辑，如读取数据、处理逻辑、返回结果。</li>
+</ol>
+<hr />
+</div>
+<div id="reactor-模式的三种典型实现" class="section level3 hasAnchor" number="6.6.5">
+<h3><span class="header-section-number">6.6.5</span> ###Reactor 模式的三种典型实现<a href="高性能架构.html#reactor-模式的三种典型实现" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p>###单Reactor单进程/线程###</p>
+<ul>
+<li>单线程监听事件并处理所有逻辑。</li>
+<li>###优点###：实现简单，适合小规模或快速处理的场景。</li>
+<li>###缺点###：性能有限，无法充分利用多核CPU，且容易出现性能瓶颈。</li>
+<li>###应用案例###：Redis。</li>
+</ul></li>
+<li><p>###单Reactor多线程###</p>
+<ul>
+<li>主线程负责监听和分发事件，子线程处理具体业务逻辑。</li>
+<li>###优点###：充分利用多核CPU。</li>
+<li>###缺点###：线程间数据共享复杂，可能成为瓶颈。</li>
+<li>###应用案例###：Java NIO 的典型实现。</li>
+</ul></li>
+<li><p>###多Reactor多进程/线程###</p>
+<ul>
+<li>父进程负责监听和分配连接，子进程或线程池处理具体逻辑。</li>
+<li>###优点###：职责明确，性能更高。</li>
+<li>###应用案例###：Nginx、Memcached、Netty。</li>
+</ul></li>
+</ol>
+<hr />
+</div>
+<div id="proactor-模式异步io的新高度" class="section level3 hasAnchor" number="6.6.6">
+<h3><span class="header-section-number">6.6.6</span> ###Proactor 模式：异步I/O的新高度<a href="高性能架构.html#proactor-模式异步io的新高度" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>###Proactor### 是一种异步I/O模型，与 Reactor 模式的区别在于它将 I/O 操作从用户进程转移到了操作系统内核：</p>
+<ul>
+<li>###Reactor###：用户进程收到事件通知后，主动进行 I/O 操作（同步非阻塞）。</li>
+<li>###Proactor###：操作系统直接完成 I/O 操作，并将结果返回给用户进程（异步）。</li>
+</ul>
+<p>Proactor 的优势在于更高的效率，但实现异步I/O需要操作系统的支持：
+- ###Windows###：通过 IOCP 实现原生异步I/O。
+- ###Linux###：AIO 支持有限，通常使用 Reactor 模式模拟异步I/O。</p>
+<hr />
+</div>
+</div>
+<div id="高性能集群与负载均衡详解" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> 高性能集群与负载均衡详解<a href="高性能架构.html#高性能集群与负载均衡详解" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="高性能集群的背景与目标" class="section level3 hasAnchor" number="6.7.1">
+<h3><span class="header-section-number">6.7.1</span> 高性能集群的背景与目标<a href="高性能架构.html#高性能集群的背景与目标" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>单台服务器无论硬件多么强大，最终都存在性能上限。当单台服务器的处理能力不足以支撑业务需求时，就需要设计高性能集群，以通过多台服务器协同工作来提升整体性能。</p>
+<p>集群的核心思路是###资源扩展###：通过增加服务器数量来提升计算能力。由于计算具有确定性，即相同的输入数据和逻辑无论在哪台服务器上运行都能得到相同的输出，因此集群的复杂度主要体现在###任务分配###部分，具体需要设计出合理的任务分配策略，将计算任务高效地分配到多台服务器。</p>
+</div>
+<div id="负载均衡的概念与作用" class="section level3 hasAnchor" number="6.7.2">
+<h3><span class="header-section-number">6.7.2</span> 负载均衡的概念与作用<a href="高性能架构.html#负载均衡的概念与作用" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>高性能集群的实现离不开一个核心组件——###任务分配器###，行业内更流行的叫法是###负载均衡器###。但这个名称可能会让人误解，以为任务分配的唯一目标是均衡各服务器的负载。实际上，负载均衡的目标远不止于此。根据业务场景，不同的负载均衡算法可能优先考虑以下不同目标：</p>
+<ul>
+<li>###负载均衡###：让每台服务器的负载尽可能均匀。</li>
+<li>###性能优化###：提升系统的吞吐量或降低响应时间。</li>
+<li>###业务需求###：根据业务逻辑定制任务分配策略。</li>
+</ul>
+<p>因此，虽然“负载均衡”已成为标准术语，但需要明确它的核心功能是###任务分配###，而非单纯追求均衡。</p>
+</div>
+<div id="负载均衡的分类" class="section level3 hasAnchor" number="6.7.3">
+<h3><span class="header-section-number">6.7.3</span> 负载均衡的分类<a href="高性能架构.html#负载均衡的分类" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>负载均衡根据实现方式可以分为以下三种类型：</p>
+<ol style="list-style-type: decimal">
+<li>###DNS负载均衡###</li>
+<li>###硬件负载均衡###</li>
+<li>###软件负载均衡###</li>
+</ol>
+<hr />
+</div>
+<div id="dns负载均衡" class="section level3 hasAnchor" number="6.7.4">
+<h3><span class="header-section-number">6.7.4</span> ###DNS负载均衡<a href="高性能架构.html#dns负载均衡" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>DNS负载均衡是最简单、常见的负载均衡方式，常用于###地理级别的均衡###。其原理是通过 DNS 系统解析同一域名返回不同 IP 地址。例如：</p>
+<ul>
+<li>北方用户访问 <code>www.baidu.com</code> 会被解析为北京机房的 IP（如 <code>61.135.165.224</code>）。</li>
+<li>南方用户访问时会被解析为深圳机房的 IP（如 <code>14.215.177.38</code>）。</li>
+</ul>
+<p>###优点###：</p>
+<ul>
+<li>###简单、成本低###：负载均衡由 DNS 服务器处理，无需开发或维护额外设备。</li>
+<li>###就近访问###：根据用户地理位置解析到最近的服务器，提升访问速度。</li>
+</ul>
+<p>###缺点###：</p>
+<ul>
+<li>###更新延迟###：DNS 缓存时间较长，配置变更后短时间内可能无法生效。</li>
+<li>###粒度粗###：无法感知服务器的实时状态（如是否宕机），也无法根据服务负载动态调整。</li>
+<li>###扩展性差###：受限于域名商的控制，难以定制复杂功能。</li>
+</ul>
+<p>针对 DNS 的局限性，有些企业开发了基于 HTTP 协议的私有 DNS 系统（如 HTTP-DNS），以实现更低延迟、更灵活的配置。</p>
+<hr />
+</div>
+<div id="硬件负载均衡" class="section level3 hasAnchor" number="6.7.5">
+<h3><span class="header-section-number">6.7.5</span> ###硬件负载均衡<a href="高性能架构.html#硬件负载均衡" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>硬件负载均衡通过专用设备实现，如业界知名的 ###F5### 和 ###A10###。这些设备类似于路由器或交换机，但专注于负载均衡，具备强大的性能和功能，通常用于###集群级别的负载均衡###。</p>
+<p>###优点###：</p>
+<ul>
+<li>###功能全面###：支持多层级的负载均衡算法（如全局负载均衡）。</li>
+<li>###性能强劲###：可轻松处理百万级并发请求（相比之下，软件负载均衡多为十万级）。</li>
+<li>###稳定性高###：经过严格测试，硬件设备更适合高稳定性需求。</li>
+<li>###安全性强###：具备防火墙、防 DDoS 攻击等安全功能。</li>
+</ul>
+<p>###缺点###：</p>
+<ul>
+<li>###价格昂贵###：F5 的入门设备价格堪比一台豪车。</li>
+<li>###扩展性差###：硬件设备固化，难以根据业务需求进行功能扩展或深度定制。</li>
+</ul>
+<p>硬件负载均衡的高成本决定了它更适合业务量极大的企业，而对中小型业务来说可能并不经济。</p>
+<hr />
+</div>
+<div id="软件负载均衡" class="section level3 hasAnchor" number="6.7.6">
+<h3><span class="header-section-number">6.7.6</span> ###软件负载均衡<a href="高性能架构.html#软件负载均衡" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>软件负载均衡通过应用程序实现，常见的方案包括 ###Nginx### 和 ###LVS###：</p>
+<ul>
+<li>###Nginx###：基于 HTTP 协议的 7 层负载均衡，支持复杂逻辑处理。</li>
+<li>###LVS###：基于 IP 层的 4 层负载均衡，与协议无关，适合更广泛的应用场景（如数据库、聊天服务等）。</li>
+</ul>
+<p>###优点###：</p>
+<ul>
+<li>###成本低###：仅需一台普通 Linux 服务器即可部署。</li>
+<li>###灵活性高###：支持多种协议，并能方便地扩展功能（如通过 Nginx 插件实现定制化）。</li>
+<li>###简单易用###：部署和维护难度低，适合大多数企业。</li>
+</ul>
+<p>###缺点###：</p>
+<ul>
+<li>###性能有限###：Nginx 一般支持 5 万级并发，LVS 可达 10 万级，相比硬件设备（百万级并发）仍有差距。</li>
+<li>###安全功能不足###：通常不具备防火墙或防 DDoS 攻击功能。</li>
+</ul>
+<p>对于多数中小型企业，软件负载均衡是更为经济且实用的选择，尤其是可以通过开源软件进一步定制以满足特定需求。</p>
+<hr />
+</div>
+<div id="组合使用负载均衡" class="section level3 hasAnchor" number="6.7.7">
+<h3><span class="header-section-number">6.7.7</span> ###组合使用负载均衡<a href="高性能架构.html#组合使用负载均衡" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>在实际应用中，负载均衡的三种方式往往结合使用，以实现不同层级的优化：</p>
+<ol style="list-style-type: decimal">
+<li>###地理级别###：使用 DNS 负载均衡，将用户流量分配到最近的数据中心。</li>
+<li>###集群级别###：使用硬件负载均衡（如 F5）管理数据中心内部的服务器集群。</li>
+<li>###机器级别###：使用软件负载均衡（如 Nginx）将请求分发到具体的服务器。</li>
+</ol>
+<p>以下是一个典型的负载均衡架构示例：</p>
+<ul>
+<li>用户访问 <code>www.example.com</code>，DNS 根据地理位置返回广州机房的 IP。</li>
+<li>广州机房使用 F5 将流量分发到多个服务器集群中的某个集群。</li>
+<li>集群内部由 Nginx 将请求分配到具体的服务器进行处理。</li>
+</ul>
+<p>这种分层负载均衡方式既能提高性能，又能保证灵活性和可扩展性。</p>
+<hr />
+</div>
+</div>
+<div id="负载均衡算法分类与解析" class="section level2 hasAnchor" number="6.8">
+<h2><span class="header-section-number">6.8</span> 负载均衡算法分类与解析<a href="高性能架构.html#负载均衡算法分类与解析" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>负载均衡算法种类繁多，且可以根据具体业务需求进行定制开发。尽管算法的具体实现细节各不相同，但从###算法的设计目标###出发，大致可以分为以下几类：</p>
+<ol style="list-style-type: decimal">
+<li><p>###任务平分类###<br />
+目标是将任务###平均分配###到各服务器进行处理。“平均”可以是绝对数量上的平均，也可以是按照权重或比例分配。</p></li>
+<li><p>###负载均衡类###<br />
+根据服务器的###当前负载###分配任务。这里的“负载”可以指 CPU 负载、连接数、I/O 使用率、网卡吞吐量等，衡量的是服务器的压力情况。</p></li>
+<li><p>###性能最优类###<br />
+优先选择###响应时间最短###的服务器，将任务分配给当前处理速度最快的服务器，以提升客户端的响应体验。</p></li>
+<li><p>###Hash类###<br />
+基于任务中的关键信息（如源 IP、用户 ID）进行 Hash 运算，将相同 Hash 值的请求分配到同一台服务器，适用于特定的业务场景，如会话保持。</p></li>
+</ol>
+<p>接下来，我们逐一解析这些算法及其优缺点。</p>
+<hr />
+<div id="轮询算法" class="section level3 hasAnchor" number="6.8.1">
+<h3><span class="header-section-number">6.8.1</span> 1. ###轮询算法<a href="高性能架构.html#轮询算法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>轮询是最简单的负载均衡策略，按照顺序依次将请求分配到服务器上，无需关注服务器的状态。例如：
+- ###不感知服务器负载###：某台服务器因程序 Bug 导致 CPU 使用率过高，但轮询算法依然会继续将任务分配给它。
+- ###不区分服务器性能###：即使有性能差异（如 32 核 vs 16 核服务器），任务仍被平均分配。</p>
+<p>###优点###：
+- 简单易实现，不需要感知服务器状态。
+- 适用于所有服务器性能相同且运行稳定的场景。</p>
+<p>###缺点###：
+- 无法处理服务器状态差异：如服务器宕机或性能瓶颈。
+- 无法有效利用资源：不同性能的服务器被分配相同数量的任务。</p>
+<p>###注意###：虽然轮询不关注“服务器运行状态”，但对于宕机的服务器，负载均衡系统能够感知，并将其从分配列表中移除。</p>
+<hr />
+</div>
+<div id="加权轮询算法" class="section level3 hasAnchor" number="6.8.2">
+<h3><span class="header-section-number">6.8.2</span> 2. ###加权轮询算法<a href="高性能架构.html#加权轮询算法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>加权轮询是在轮询算法的基础上引入“权重”概念，根据服务器的处理能力（如 CPU 核数）进行任务分配。例如：
+- 一台 32 核服务器和一台 16 核服务器，权重可设置为 2:1，从而新任务中 2/3 分配给 32 核服务器，1/3 分配给 16 核服务器。</p>
+<p>###优点###：
+- 简单易实现。
+- 解决了轮询算法中无法处理服务器性能差异的问题。</p>
+<p>###缺点###：
+- 无法感知服务器的动态状态（如 CPU 或内存占用）。
+- 需手动设置权重，若服务器状态动态变化，需额外调整权重配置。</p>
+<hr />
+</div>
+<div id="负载最低优先算法" class="section level3 hasAnchor" number="6.8.3">
+<h3><span class="header-section-number">6.8.3</span> 3. ###负载最低优先算法<a href="高性能架构.html#负载最低优先算法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>根据服务器的当前负载状态，将任务分配给负载最低的服务器。负载的衡量指标可根据业务场景决定：
+- ###LVS###（4 层负载均衡）：通过连接数衡量服务器压力。
+- ###Nginx###（7 层负载均衡）：通过 HTTP 请求数衡量服务器压力（需插件支持）。
+- 自定义：CPU 负载、I/O 利用率等。</p>
+<p>###优点###：
+- 动态感知服务器状态，任务分配更智能。
+- 提升整体资源利用率，避免性能瓶颈。</p>
+<p>###缺点###：
+- 实现复杂度高：需要实时统计服务器状态，如连接数、CPU 负载等。
+- 不适用某些场景：如通过固定连接池连接 MySQL 集群时，无法使用“最少连接数”算法。</p>
+<p>###注意###：负载最低优先算法的设计需匹配业务特性。例如，采集 CPU 负载时，需要根据场景决定以 1 分钟、5 分钟或更长时间的平均负载为基准，以避免频繁波动或响应延迟。</p>
+<hr />
+</div>
+<div id="性能最优类算法" class="section level3 hasAnchor" number="6.8.4">
+<h3><span class="header-section-number">6.8.4</span> 4. ###性能最优类算法<a href="高性能架构.html#性能最优类算法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>此类算法从###客户端角度###出发，根据服务器的响应时间分配任务，优先选择响应最快的服务器。与负载最低优先类似，它本质上也需要感知服务器状态，但以###响应时间###作为衡量标准。</p>
+<p>###优点###：
+- 优化客户端体验，降低响应时间。
+- 更关注任务的实际处理效率。</p>
+<p>###缺点###：
+- 统计开销大：需要实时收集和分析服务器的响应时间，尤其在高并发场景下可能对性能造成压力。
+- 复杂性高：需要设计采样策略和统计周期，确保采样结果既准确又高效。</p>
+<p>###示例###：
+- 使用全量统计：记录每个任务的响应时间，但消耗较大。
+- 采样统计：对部分任务进行响应时间抽样，以估算整体性能，但需权衡采样率和统计周期。</p>
+<hr />
+</div>
+<div id="hash类算法" class="section level3 hasAnchor" number="6.8.5">
+<h3><span class="header-section-number">6.8.5</span> 5. ###Hash类算法<a href="高性能架构.html#hash类算法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>基于任务的特定关键信息（如源 IP 地址、用户 ID）进行 Hash 运算，将相同 Hash 值的请求分配到同一台服务器。主要应用于需要###会话保持###的场景。</p>
+<p>###常见类型###：
+- ###源地址 Hash###：同一源 IP 的请求始终分配到同一服务器，适用于需要会话保持的场景，如用户登录后的银行业务。
+- ###ID Hash###：基于临时会话 ID（如 session ID）分配任务，确保同一会话期间用户请求被分配到同一服务器。</p>
+<p>###优点###：
+- 适用于会话保持和状态依赖的业务场景。
+- 算法简单，易于实现。</p>
+<p>###缺点###：
+- 无法动态调整任务分配：如某台服务器压力过大，Hash 值无法轻易迁移任务到其他服务器。
+- Hash 碰撞：可能导致任务分布不均。</p>
+<hr />
+</div>
+</div>
+<div id="cap-定理简介" class="section level2 hasAnchor" number="6.9">
+<h2><span class="header-section-number">6.9</span> CAP 定理简介<a href="高性能架构.html#cap-定理简介" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>###CAP定理###（CAP theorem），又称###布鲁尔定理###（Brewer’s theorem），由加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在 2000 年 ACM PODC 会议上首次提出。2002 年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）正式证明了布鲁尔的猜想，使其成为分布式计算领域公认的重要理论。对于分布式系统架构设计者来说，CAP 定理是必须掌握的基础知识。</p>
+<p>CAP 定理指出，在分布式系统中，###一致性###（Consistency）、###可用性###（Availability）和###分区容忍性###（Partition Tolerance）三者不能同时兼得。也就是说，在设计分布式系统时，架构师必须在三者中做出权衡和取舍。</p>
+<hr />
+<div id="cap-定义的困惑" class="section level3 hasAnchor" number="6.9.1">
+<h3><span class="header-section-number">6.9.1</span> CAP 定义的困惑<a href="高性能架构.html#cap-定义的困惑" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>CAP 定理的三个核心要素在定义上曾有多种描述，不同资料之间存在细微差异。例如：</p>
+<ol style="list-style-type: decimal">
+<li>###一致性（Consistency）###
+<ul>
+<li>###定义 1###：所有节点在同一时间看到相同的数据。</li>
+<li>###定义 2###：每次读取操作保证返回最近一次写入的结果。</li>
+<li>###定义 3###：所有节点可以同时访问相同的数据。</li>
+</ul></li>
+<li>###可用性（Availability）###
+<ul>
+<li>###定义 1###：每个请求都会收到成功或失败的响应。</li>
+<li>###定义 2###：非故障节点在合理时间内返回一个合理响应。</li>
+<li>###定义 3###：系统始终能保证返回至少一个响应。</li>
+</ul></li>
+<li>###分区容忍性（Partition Tolerance）###
+<ul>
+<li>###定义 1###：即使发生消息丢失或部分节点失效，系统仍能继续运行。</li>
+<li>###定义 2###：即使发生网络分区，系统仍能履行其功能。</li>
+<li>###定义 3###：系统在节点通信出现问题时仍能保持服务可用性。</li>
+</ul></li>
+</ol>
+<p>由于这些差异，新手在学习 CAP 定理时往往感到困惑。为更清晰地理解 CAP，我们将采用 Robert Greiner 的两版解释对其定义进行剖析。</p>
+<hr />
+</div>
+<div id="cap-定理的两版解释" class="section level3 hasAnchor" number="6.9.2">
+<h3><span class="header-section-number">6.9.2</span> CAP 定理的两版解释<a href="高性能架构.html#cap-定理的两版解释" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>###第一版解释###
+<ul>
+<li>“任何分布式系统无法同时满足一致性、可用性和分区容忍性。”</li>
+<li>###特点###：简单直接，但未明确分布式系统的范畴，也未说明 CAP 理论主要探讨的对象是数据读写操作。</li>
+</ul></li>
+<li>###第二版解释###
+<ul>
+<li>“在一个分布式系统中，涉及读写操作时，只能在一致性、可用性和分区容忍性三者中选择两个，另一项必须被牺牲。”</li>
+<li>###特点###：更精确，明确了分布式系统的范围（互联且共享数据）和关注点（数据读写操作）。</li>
+</ul></li>
+</ol>
+<p>###关键差异点：###
+- 第二版明确了分布式系统的适用范围，仅限于互联且共享数据的系统。
+- 第二版聚焦于读写操作，而非分布式系统的所有功能。
+- 第二版表述更精确，但不如第一版易记，因此大部分技术讨论仍沿用第一版定义。</p>
+<hr />
+</div>
+<div id="cap-三要素的详细解析" class="section level3 hasAnchor" number="6.9.3">
+<h3><span class="header-section-number">6.9.3</span> CAP 三要素的详细解析<a href="高性能架构.html#cap-三要素的详细解析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="一致性consistency" class="section level4 hasAnchor" number="6.9.3.1">
+<h4><span class="header-section-number">6.9.3.1</span> 1. 一致性（Consistency）<a href="高性能架构.html#一致性consistency" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>###第一版定义###：所有节点在同一时间看到相同的数据。</li>
+<li>###第二版定义###：对于特定客户端，读操作保证返回最新的写操作结果。</li>
+</ul>
+<p>###对比分析：###
+- ###观察角度不同###：第一版从节点角度出发，强调“所有节点同时拥有相同数据”；第二版从客户端角度出发，关注“客户端读取数据的一致性”。
+- ###定义更严谨###：第一版的关键词 “see” 不够精准，因为节点“拥有”而非“看到”数据；第二版通过“读操作返回最新写结果”对一致性进行了更精准描述。
+- ###事务场景考量###：第二版更贴近实际系统行为，允许在事务执行中节点暂时处于不一致状态，只要事务最终提交时达到一致性即可。</p>
+</div>
+<div id="可用性availability" class="section level4 hasAnchor" number="6.9.3.2">
+<h4><span class="header-section-number">6.9.3.2</span> 2. 可用性（Availability）<a href="高性能架构.html#可用性availability" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>###第一版定义###：每个请求都能获得成功或失败的响应。</li>
+<li>###第二版定义###：非故障节点在合理时间内返回合理响应（非错误或超时）。</li>
+</ul>
+<p>###对比分析：###
+- ###节点状态限制###：第一版未区分故障节点和正常节点；第二版强调仅非故障节点需要满足可用性要求。
+- ###响应定义差异###：第一版对响应定义宽泛，成功、失败、超时甚至错误均可算作响应；第二版明确了响应需合理且无错误，定义更严谨。</p>
+</div>
+<div id="分区容忍性partition-tolerance" class="section level4 hasAnchor" number="6.9.3.3">
+<h4><span class="header-section-number">6.9.3.3</span> 3. 分区容忍性（Partition Tolerance）<a href="高性能架构.html#分区容忍性partition-tolerance" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>###第一版定义###：即使发生消息丢失或部分故障，系统仍能继续运行。</li>
+<li>###第二版定义###：在网络分区情况下，系统仍能履行其功能。</li>
+</ul>
+<p>###对比分析：###
+- ###表述更精确###：第一版描述“消息丢失”这一具体故障，定义较狭隘；第二版采用“网络分区”这一广义现象，涵盖更全面。
+- ###功能要求提升###：第一版强调系统继续运行即可；第二版要求系统在分区情况下仍需提供有效服务。</p>
+<hr />
+</div>
+</div>
+<div id="cap-理论的实际应用" class="section level3 hasAnchor" number="6.9.4">
+<h3><span class="header-section-number">6.9.4</span> CAP 理论的实际应用<a href="高性能架构.html#cap-理论的实际应用" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>在分布式系统中，网络分区（P）是不可避免的。因此，架构设计时通常必须选择 ###CP### 或 ###AP### 模式，而无法实现 ###CA### 模式：</p>
+<div id="cp-模式一致性-分区容忍性" class="section level4 hasAnchor" number="6.9.4.1">
+<h4><span class="header-section-number">6.9.4.1</span> 1. ###CP 模式###（一致性 + 分区容忍性）<a href="高性能架构.html#cp-模式一致性-分区容忍性" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>###特性###：当发生分区时，为保证数据一致性，系统会限制写入操作（如返回错误）。</li>
+<li>###应用场景###：对一致性要求极高的系统，如数据库主备同步、分布式锁等。</li>
+</ul>
+<p>###示例###：某系统中，节点 N1 已更新数据至 y，但由于与节点 N2 的网络中断，y 未同步到 N2。当客户端访问 N2 时，系统返回错误，表明当前数据不可用。</p>
+</div>
+<div id="ap-模式可用性-分区容忍性" class="section level4 hasAnchor" number="6.9.4.2">
+<h4><span class="header-section-number">6.9.4.2</span> 2. ###AP 模式###（可用性 + 分区容忍性）<a href="高性能架构.html#ap-模式可用性-分区容忍性" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>###特性###：当发生分区时，为保证可用性，系统返回旧数据（非最新但合理的结果）。</li>
+<li>###应用场景###：对高可用性要求更高的系统，如缓存服务、内容分发网络（CDN）等。</li>
+</ul>
+<p>###示例###：同一场景中，节点 N1 数据已更新至 y，但 N2 数据仍为 x。当客户端访问 N2 时，系统返回 x，尽管数据非最新，但仍是合理的旧值。</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="fmea-方法简介" class="section level2 hasAnchor" number="6.10">
+<h2><span class="header-section-number">6.10</span> FMEA 方法简介<a href="高性能架构.html#fmea-方法简介" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>FMEA 是一种广泛应用于各行业的可用性分析方法，通过分析系统中潜在的故障模式，并按其严重程度分类，来评估故障对系统的最终影响。它起源于 20 世纪 40 年代美国空军，最初用于军事领域，但现已广泛应用于半导体、医疗保健、软件开发等多种行业。</p>
+<p>FMEA 的核心在于它是一种分析和思考的方法，而非某个领域专属的工具。因此，在软件架构设计中，###FMEA 并不直接指导我们如何设计架构，而是在架构完成后，用于识别和评估潜在的可用性隐患###。</p>
+<hr />
+<div id="fmea-方法的具体应用" class="section level3 hasAnchor" number="6.10.1">
+<h3><span class="header-section-number">6.10.1</span> FMEA 方法的具体应用<a href="高性能架构.html#fmea-方法的具体应用" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>在架构设计领域，FMEA 的分析方法可以分为以下几个步骤：</p>
+<ol style="list-style-type: decimal">
+<li>###绘制初始架构设计图###：明确当前系统的结构与各组件功能。</li>
+<li>###假设某组件发生故障###：模拟系统中某个组件的潜在故障。</li>
+<li>###分析故障对系统功能的影响###：评估故障可能导致的功能中断或性能退化。</li>
+<li>###判断是否需要优化架构###：根据分析结果，决定是否调整设计。</li>
+</ol>
+<p>实际应用中，FMEA 的核心工具是###分析表###，一个典型的 FMEA 分析表包括以下内容：</p>
+<div id="功能点" class="section level4 hasAnchor" number="6.10.1.1">
+<h4><span class="header-section-number">6.10.1.1</span> 1. 功能点<a href="高性能架构.html#功能点" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>功能点是从用户的角度看待系统功能的切入点，而不是从模块划分的技术角度。例如：
+- 对于用户管理系统，“登录”和“注册”是功能点，而“数据库存储”或“缓存”只是内部实现，不能直接作为功能点。</p>
+</div>
+<div id="故障模式" class="section level4 hasAnchor" number="6.10.1.2">
+<h4><span class="header-section-number">6.10.1.2</span> 2. 故障模式<a href="高性能架构.html#故障模式" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>故障模式描述系统可能出现的具体故障现象，无需探讨其深层原因。例如：
+- ###推荐描述###：MySQL 响应时间达到 3 秒。
+- ###避免描述###：MySQL 响应变慢。
+量化的描述有助于准确评估故障的影响。</p>
+</div>
+<div id="故障影响" class="section level4 hasAnchor" number="6.10.1.3">
+<h4><span class="header-section-number">6.10.1.3</span> 3. 故障影响<a href="高性能架构.html#故障影响" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>分析功能点在发生故障后的具体表现。例如：
+- ###推荐描述###：20% 的用户无法登录。
+- ###避免描述###：大部分用户无法登录。
+影响范围不必精确到小数点，但应提供合理的估算。</p>
+</div>
+<div id="严重程度" class="section level4 hasAnchor" number="6.10.1.4">
+<h4><span class="header-section-number">6.10.1.4</span> 4. 严重程度<a href="高性能架构.html#严重程度" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>从业务角度评估故障的影响程度，通常分为以下等级：
+- ###致命###：如 70% 以上的用户无法登录。
+- ###高###：如 30% 以上的用户无法登录。
+- ###中###：如所有用户登录时间超过 5 秒。
+- ###低###：如 10% 的用户登录时间超过 5 秒。
+严重程度的评定没有绝对标准，可以通过团队讨论达成共识。</p>
+</div>
+<div id="故障原因" class="section level4 hasAnchor" number="6.10.1.5">
+<h4><span class="header-section-number">6.10.1.5</span> 5. 故障原因<a href="高性能架构.html#故障原因" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>列出导致某一故障的潜在原因。例如：
+- MySQL 响应时间变慢可能由磁盘坏道、慢查询、网络故障等引起。
+列出故障原因有助于明确故障的检测和处理手段。</p>
+</div>
+<div id="故障概率" class="section level4 hasAnchor" number="6.10.1.6">
+<h4><span class="header-section-number">6.10.1.6</span> 6. 故障概率<a href="高性能架构.html#故障概率" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>评估特定故障发生的概率，分为“高/中/低”三档。例如：
+- 磁盘坏道概率较低，但使用 3 年以上的硬盘会显著提高坏道概率。
+- 刚引入的新系统，Bug 概率通常高于成熟系统。</p>
+</div>
+<div id="风险程度" class="section level4 hasAnchor" number="6.10.1.7">
+<h4><span class="header-section-number">6.10.1.7</span> 7. 风险程度<a href="高性能架构.html#风险程度" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>风险程度是严重程度和故障概率的结合，用以优先排序。例如：
+- 地震导致数据中心宕机概率极低，但影响巨大，因此风险程度可能低于频繁的网络抖动。</p>
+</div>
+<div id="已有措施" class="section level4 hasAnchor" number="6.10.1.8">
+<h4><span class="header-section-number">6.10.1.8</span> 8. 已有措施<a href="高性能架构.html#已有措施" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>列出系统目前应对该故障的措施，例如：
+- ###检测告警###：系统检测到故障后触发告警，需人工干预。
+- ###容错机制###：如 MySQL 主备切换，故障时自动连接备机。
+- ###自恢复###：如 Hadoop 在节点故障后自动重新分配副本。</p>
+</div>
+<div id="规避措施" class="section level4 hasAnchor" number="6.10.1.9">
+<h4><span class="header-section-number">6.10.1.9</span> 9. 规避措施<a href="高性能架构.html#规避措施" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>为降低故障发生概率而采取的预防性措施。例如：
+- 强制更换使用 2 年以上的磁盘。
+- 引入双机热备以降低单点故障风险。</p>
+</div>
+<div id="解决措施" class="section level4 hasAnchor" number="6.10.1.10">
+<h4><span class="header-section-number">6.10.1.10</span> 10. 解决措施<a href="高性能架构.html#解决措施" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>为解决故障影响而采取的应对措施。例如：
+- 增加密码重试次数限制以防暴力破解。
+- 数据库敏感数据加密以防泄露。</p>
+</div>
+<div id="后续规划" class="section level4 hasAnchor" number="6.10.1.11">
+<h4><span class="header-section-number">6.10.1.11</span> 11. 后续规划<a href="高性能架构.html#后续规划" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>根据风险评估结果，优先处理高风险隐患，并合理分配资源。例如：
+- 地震导致机房中断：采用备份中心方案规避。
+- 缓存单机故障：扩展为分布式缓存集群。</p>
+<hr />
+</div>
+</div>
+<div id="fmea-实战用户管理系统案例" class="section level3 hasAnchor" number="6.10.2">
+<h3><span class="header-section-number">6.10.2</span> FMEA 实战：用户管理系统案例<a href="高性能架构.html#fmea-实战用户管理系统案例" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>假设一个简单的用户管理系统，包含“登录”和“注册”两个功能，其初始架构如下：</p>
+<p>###初始架构：###
+- ###MySQL###：负责数据存储。
+- ###Memcache (MC)###：负责缓存。
+- ###Server###：处理业务逻辑。</p>
+<p>通过 FMEA 分析后发现以下隐患：</p>
+<ol style="list-style-type: decimal">
+<li>MySQL 单机故障可能导致服务不可用。</li>
+<li>Memcache 单机故障可能导致缓存不可用，系统性能下降。</li>
+<li>MySQL 网络连接故障可能导致数据无法访问。</li>
+</ol>
+<p>###改进措施：###
+- 增加 MySQL 主备切换机制。
+- 将 Memcache 扩展为分布式集群。
+- 为 MySQL 配置双网卡。</p>
+<p>###改进后架构：###</p>
+<p>改进后的架构采用主备 MySQL、分布式缓存 Memcache，并增加网络冗余，提高系统的可用性。</p>
+<hr />
+</div>
+<div id="总结-2" class="section level3 hasAnchor" number="6.10.3">
+<h3><span class="header-section-number">6.10.3</span> 总结<a href="高性能架构.html#总结-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>FMEA 是一种系统化的分析方法，帮助架构师全面识别潜在的可用性隐患，并通过风险评估与优先级排序，有针对性地制定规避和解决措施。在实际应用中，FMEA 不仅适用于软件架构，还能广泛应用于其他领域。通过 FMEA 的实践，架构师可以构建更加稳定和高可用的系统，为业务的持续发展提供坚实的基础。</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="架构设计.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="高可用存储架构.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-blocks.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
